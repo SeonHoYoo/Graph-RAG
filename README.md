@@ -58,7 +58,7 @@ sh 파일의 `#SBATCH --nodelist=**` 이 부분에서 노드 이름을 맞춰주
     ```
 
 
-## GraphCheck 실행 방법
+## GraphCheck 실행 방법(실험 환경 확인용)
 
 Retriver 를 실행한 다음, graphcheck_v1/v2/v3.sh 파일을 sbatch로 제출하시면 각 버전의 GraphCheck가 실행됩니다.
 
