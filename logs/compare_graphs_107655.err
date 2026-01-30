@@ -1,0 +1,100 @@
+/data3/seonhoyoo/.conda/envs/graphcheck/lib/python3.10/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+2026-01-26 15:03:06,186 - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:02,  1.39it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:01<00:01,  1.35it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:02<00:00,  1.33it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.40it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.38it/s]
+2026-01-26 15:03:10,648 - INFO - Processing 10 samples...
+2026-01-26 15:03:10,648 - INFO - Using model: Qwen/Qwen2.5-7B-Instruct
+2026-01-26 15:03:10,648 - INFO - Retriever URL: http://127.0.0.1:8000/retrieve
+2026-01-26 15:03:10,648 - INFO - BM25 top_k: 5
+  0%|          | 0/10 [00:00<?, ?it/s]2026-01-26 15:03:10,648 - INFO - Sample 0 has no CoT triplets or force regen is set. Generating...
+The following generation flags are not valid and may be ignored: ['top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+2026-01-26 15:03:18,191 - INFO - Sample 0: Generated reasoning (54 chars) and 5 triplets
+2026-01-26 15:03:18,191 - INFO - Sample 0 has no retrieved documents. Retrieving...
+2026-01-26 15:03:18,191 - INFO - Sample 0: Using CoT reasoning for retrieval
+2026-01-26 15:04:17,201 - INFO - Sample 0: CoT triplets=7, Doc triplets=75, Overlap=0, F1=0.000
+2026-01-26 15:04:17,202 - INFO - Sample 0 (CoT vs Gold): Gold triplets=35, Overlap=0, F1=0.000
+2026-01-26 15:04:17,202 - INFO - Sample 0 (Gold vs Doc): Gold triplets=35, Doc triplets=75, Overlap=14, F1=0.255
+ 10%|█         | 1/10 [01:06<09:58, 66.55s/it]2026-01-26 15:04:17,202 - INFO - Sample 1 has no CoT triplets or force regen is set. Generating...
+2026-01-26 15:04:20,285 - INFO - Sample 1: Generated reasoning (66 chars) and 2 triplets
+2026-01-26 15:04:20,285 - INFO - Sample 1 has no retrieved documents. Retrieving...
+2026-01-26 15:04:20,285 - INFO - Sample 1: Using CoT reasoning for retrieval
+2026-01-26 15:04:58,351 - INFO - Sample 1: CoT triplets=4, Doc triplets=57, Overlap=0, F1=0.000
+2026-01-26 15:04:58,352 - INFO - Sample 1 (CoT vs Gold): Gold triplets=17, Overlap=0, F1=0.000
+2026-01-26 15:04:58,352 - INFO - Sample 1 (Gold vs Doc): Gold triplets=17, Doc triplets=57, Overlap=2, F1=0.054
+ 20%|██        | 2/10 [01:47<06:52, 51.61s/it]2026-01-26 15:04:58,352 - INFO - Sample 2 has no CoT triplets or force regen is set. Generating...
+2026-01-26 15:05:07,241 - INFO - Sample 2: Generated reasoning (54 chars) and 3 triplets
+2026-01-26 15:05:07,242 - INFO - Sample 2 has no retrieved documents. Retrieving...
+2026-01-26 15:05:07,242 - INFO - Sample 2: Using CoT reasoning for retrieval
+2026-01-26 15:05:38,935 - INFO - Sample 2: CoT triplets=8, Doc triplets=40, Overlap=0, F1=0.000
+2026-01-26 15:05:38,936 - INFO - Sample 2 (CoT vs Gold): Gold triplets=13, Overlap=0, F1=0.000
+2026-01-26 15:05:38,936 - INFO - Sample 2 (Gold vs Doc): Gold triplets=13, Doc triplets=40, Overlap=3, F1=0.113
+ 30%|███       | 3/10 [02:28<05:26, 46.58s/it]2026-01-26 15:05:38,936 - INFO - Sample 3 has no CoT triplets or force regen is set. Generating...
+2026-01-26 15:05:45,012 - INFO - Sample 3: Generated reasoning (54 chars) and 3 triplets
+2026-01-26 15:05:45,013 - INFO - Sample 3 has no retrieved documents. Retrieving...
+2026-01-26 15:05:45,013 - INFO - Sample 3: Using CoT reasoning for retrieval
+2026-01-26 15:06:15,726 - INFO - Sample 3: CoT triplets=7, Doc triplets=40, Overlap=0, F1=0.000
+2026-01-26 15:06:15,726 - INFO - Sample 3 (CoT vs Gold): Gold triplets=19, Overlap=0, F1=0.000
+2026-01-26 15:06:15,726 - INFO - Sample 3 (Gold vs Doc): Gold triplets=19, Doc triplets=40, Overlap=0, F1=0.000
+ 40%|████      | 4/10 [03:05<04:16, 42.71s/it]2026-01-26 15:06:15,727 - INFO - Sample 4 has no CoT triplets or force regen is set. Generating...
+2026-01-26 15:06:24,526 - INFO - Sample 4: Generated reasoning (252 chars) and 6 triplets
+2026-01-26 15:06:24,526 - INFO - Sample 4 has no retrieved documents. Retrieving...
+2026-01-26 15:06:24,526 - INFO - Sample 4: Using CoT reasoning for retrieval
+2026-01-26 15:06:56,867 - INFO - Sample 4: CoT triplets=10, Doc triplets=41, Overlap=0, F1=0.000
+2026-01-26 15:06:56,867 - INFO - Sample 4 (CoT vs Gold): Gold triplets=15, Overlap=0, F1=0.000
+2026-01-26 15:06:56,867 - INFO - Sample 4 (Gold vs Doc): Gold triplets=15, Doc triplets=41, Overlap=13, F1=0.491
+ 50%|█████     | 5/10 [03:46<03:30, 42.15s/it]2026-01-26 15:06:56,867 - INFO - Sample 5 has no CoT triplets or force regen is set. Generating...
+2026-01-26 15:07:06,549 - INFO - Sample 5: Generated reasoning (542 chars) and 2 triplets
+2026-01-26 15:07:06,550 - INFO - Sample 5 has no retrieved documents. Retrieving...
+2026-01-26 15:07:06,550 - INFO - Sample 5: Using CoT reasoning for retrieval
+2026-01-26 15:07:35,744 - INFO - Sample 5: CoT triplets=9, Doc triplets=37, Overlap=0, F1=0.000
+2026-01-26 15:07:35,744 - INFO - Sample 5 (CoT vs Gold): Gold triplets=13, Overlap=0, F1=0.000
+2026-01-26 15:07:35,744 - INFO - Sample 5 (Gold vs Doc): Gold triplets=13, Doc triplets=37, Overlap=1, F1=0.043
+ 60%|██████    | 6/10 [04:25<02:44, 41.03s/it]2026-01-26 15:07:35,745 - INFO - Sample 6 has no CoT triplets or force regen is set. Generating...
+2026-01-26 15:07:41,540 - INFO - Sample 6: Generated reasoning (176 chars) and 4 triplets
+2026-01-26 15:07:41,540 - INFO - Sample 6 has no retrieved documents. Retrieving...
+2026-01-26 15:07:41,540 - INFO - Sample 6: Using CoT reasoning for retrieval
+2026-01-26 15:08:16,572 - INFO - Sample 6: CoT triplets=5, Doc triplets=39, Overlap=0, F1=0.000
+2026-01-26 15:08:16,572 - INFO - Sample 6 (CoT vs Gold): Gold triplets=20, Overlap=0, F1=0.000
+2026-01-26 15:08:16,572 - INFO - Sample 6 (Gold vs Doc): Gold triplets=20, Doc triplets=39, Overlap=13, F1=0.441
+ 70%|███████   | 7/10 [05:05<02:02, 40.97s/it]2026-01-26 15:08:16,572 - INFO - Sample 7 has no CoT triplets or force regen is set. Generating...
+2026-01-26 15:08:22,986 - INFO - Sample 7: Generated reasoning (160 chars) and 4 triplets
+2026-01-26 15:08:22,986 - INFO - Sample 7 has no retrieved documents. Retrieving...
+2026-01-26 15:08:22,986 - INFO - Sample 7: Using CoT reasoning for retrieval
+2026-01-26 15:09:01,777 - INFO - Sample 7: CoT triplets=6, Doc triplets=43, Overlap=0, F1=0.000
+2026-01-26 15:09:01,778 - INFO - Sample 7 (CoT vs Gold): Gold triplets=23, Overlap=0, F1=0.000
+2026-01-26 15:09:01,778 - INFO - Sample 7 (Gold vs Doc): Gold triplets=23, Doc triplets=43, Overlap=3, F1=0.091
+ 80%|████████  | 8/10 [05:51<01:24, 42.32s/it]2026-01-26 15:09:01,778 - INFO - Sample 8 has no CoT triplets or force regen is set. Generating...
+2026-01-26 15:09:08,559 - INFO - Sample 8: Generated reasoning (54 chars) and 4 triplets
+2026-01-26 15:09:08,560 - INFO - Sample 8 has no retrieved documents. Retrieving...
+2026-01-26 15:09:08,560 - INFO - Sample 8: Using CoT reasoning for retrieval
+2026-01-26 15:09:38,329 - INFO - Sample 8: CoT triplets=6, Doc triplets=34, Overlap=0, F1=0.000
+2026-01-26 15:09:38,329 - INFO - Sample 8 (CoT vs Gold): Gold triplets=14, Overlap=0, F1=0.000
+2026-01-26 15:09:38,329 - INFO - Sample 8 (Gold vs Doc): Gold triplets=14, Doc triplets=34, Overlap=5, F1=0.233
+ 90%|█████████ | 9/10 [06:27<00:40, 40.51s/it]2026-01-26 15:09:38,330 - INFO - Sample 9 has no CoT triplets or force regen is set. Generating...
+2026-01-26 15:09:43,813 - INFO - Sample 9: Generated reasoning (262 chars) and 2 triplets
+2026-01-26 15:09:43,813 - INFO - Sample 9 has no retrieved documents. Retrieving...
+2026-01-26 15:09:43,813 - INFO - Sample 9: Using CoT reasoning for retrieval
+2026-01-26 15:10:17,388 - INFO - Sample 9: CoT triplets=5, Doc triplets=47, Overlap=0, F1=0.000
+2026-01-26 15:10:17,389 - INFO - Sample 9 (CoT vs Gold): Gold triplets=15, Overlap=0, F1=0.000
+2026-01-26 15:10:17,389 - INFO - Sample 9 (Gold vs Doc): Gold triplets=15, Doc triplets=47, Overlap=9, F1=0.290
+100%|██████████| 10/10 [07:06<00:00, 40.07s/it]100%|██████████| 10/10 [07:06<00:00, 42.67s/it]
+2026-01-26 15:10:17,399 - INFO - Results saved to: results/musique/graph_comparison/Qwen2.5-7B-Instruct/compare_graphs_train_sampled.json
+2026-01-26 15:10:17,399 - INFO - 
+=== Summary ===
+2026-01-26 15:10:17,399 - INFO - Total samples: 10
+2026-01-26 15:10:17,399 - INFO - Valid samples: 10
+2026-01-26 15:10:17,399 - INFO - Average Precision: 0.000
+2026-01-26 15:10:17,399 - INFO - Average Recall: 0.000
+2026-01-26 15:10:17,399 - INFO - Average F1: 0.000
+2026-01-26 15:10:17,399 - INFO - 
+=== CoT vs Gold Summary ===
+2026-01-26 15:10:17,399 - INFO - Gold valid samples: 10
+2026-01-26 15:10:17,400 - INFO - Average Precision: 0.000
+2026-01-26 15:10:17,400 - INFO - Average Recall: 0.000
+2026-01-26 15:10:17,400 - INFO - Average F1: 0.000
+2026-01-26 15:10:17,400 - INFO - 
+=== Gold vs Doc Summary ===
+2026-01-26 15:10:17,400 - INFO - Gold vs Doc valid samples: 10
+2026-01-26 15:10:17,400 - INFO - Average Precision: 0.343
+2026-01-26 15:10:17,400 - INFO - Average Recall: 0.144
+2026-01-26 15:10:17,400 - INFO - Average F1: 0.201

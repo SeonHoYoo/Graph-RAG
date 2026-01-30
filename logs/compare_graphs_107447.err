@@ -1,0 +1,146 @@
+/data3/seonhoyoo/.conda/envs/graphcheck/lib/python3.10/site-packages/transformers/utils/hub.py:110: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+Fetching 17 files:   0%|          | 0/17 [00:00<?, ?it/s]Fetching 17 files:   6%|▌         | 1/17 [32:40<8:42:48, 1960.52s/it]Fetching 17 files: 100%|██████████| 17/17 [32:40<00:00, 115.32s/it]  
+2026-01-26 01:11:37,745 - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+Loading checkpoint shards:   0%|          | 0/17 [00:00<?, ?it/s]Loading checkpoint shards:   6%|▌         | 1/17 [00:34<09:06, 34.18s/it]Loading checkpoint shards:  12%|█▏        | 2/17 [01:08<08:29, 33.97s/it]Loading checkpoint shards:  18%|█▊        | 3/17 [01:41<07:53, 33.80s/it]Loading checkpoint shards:  24%|██▎       | 4/17 [02:15<07:18, 33.73s/it]Loading checkpoint shards:  29%|██▉       | 5/17 [02:48<06:44, 33.69s/it]Loading checkpoint shards:  35%|███▌      | 6/17 [03:22<06:09, 33.61s/it]Loading checkpoint shards:  41%|████      | 7/17 [03:56<05:36, 33.64s/it]Loading checkpoint shards:  47%|████▋     | 8/17 [04:29<05:03, 33.74s/it]Loading checkpoint shards:  53%|█████▎    | 9/17 [05:03<04:29, 33.73s/it]Loading checkpoint shards:  59%|█████▉    | 10/17 [05:37<03:56, 33.73s/it]Loading checkpoint shards:  65%|██████▍   | 11/17 [06:11<03:22, 33.74s/it]Loading checkpoint shards:  71%|███████   | 12/17 [06:16<02:05, 25.02s/it]Loading checkpoint shards:  76%|███████▋  | 13/17 [06:16<01:10, 17.52s/it]Loading checkpoint shards:  82%|████████▏ | 14/17 [06:16<00:36, 12.31s/it]Loading checkpoint shards:  88%|████████▊ | 15/17 [06:17<00:17,  8.68s/it]Loading checkpoint shards:  94%|█████████▍| 16/17 [06:17<00:06,  6.17s/it]Loading checkpoint shards: 100%|██████████| 17/17 [06:17<00:00,  4.39s/it]Loading checkpoint shards: 100%|██████████| 17/17 [06:17<00:00, 22.21s/it]
+2026-01-26 01:17:56,090 - WARNING - Some parameters are on the meta device because they were offloaded to the cpu.
+2026-01-26 01:17:59,032 - INFO - Processing 100 samples...
+2026-01-26 01:17:59,032 - INFO - Using model: Qwen/Qwen2.5-32B-Instruct
+2026-01-26 01:17:59,032 - INFO - Retriever URL: http://127.0.0.1:8000/retrieve
+2026-01-26 01:17:59,032 - INFO - BM25 top_k: 5
+  0%|          | 0/100 [00:00<?, ?it/s]2026-01-26 01:17:59,032 - INFO - Sample 0 has no CoT reasoning/triplets or force regen is set. Generating...
+The following generation flags are not valid and may be ignored: ['top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+2026-01-26 01:25:15,985 - INFO - Sample 0: retry CoT generation (1/3)
+2026-01-26 01:29:23,825 - INFO - Sample 0: retry CoT generation (2/3)
+2026-01-26 01:33:38,478 - INFO - Sample 0: retry CoT generation (3/3)
+2026-01-26 01:37:53,106 - WARNING - Sample 0 CoT generation yielded empty output after retries.
+2026-01-26 01:37:53,107 - INFO - Sample 0 has no retrieved documents. Retrieving...
+2026-01-26 02:37:31,053 - INFO - Sample 0: CoT triplets=4, Doc triplets=77, Overlap=0, F1=0.000
+2026-01-26 02:37:31,061 - INFO - Sample 0 (gold): Gold triplets=50, Overlap=0, F1=0.000
+  1%|          | 1/100 [1:19:32<131:13:50, 4772.03s/it]2026-01-26 02:37:31,062 - INFO - Sample 1 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 02:40:47,386 - INFO - Sample 1: retry CoT generation (1/3)
+2026-01-26 02:44:06,758 - INFO - Sample 1: retry CoT generation (2/3)
+2026-01-26 02:47:30,814 - INFO - Sample 1: retry CoT generation (3/3)
+2026-01-26 02:50:53,831 - WARNING - Sample 1 CoT generation yielded empty output after retries.
+2026-01-26 02:50:53,832 - INFO - Sample 1 has no retrieved documents. Retrieving...
+2026-01-26 03:24:21,565 - INFO - Sample 1: CoT triplets=4, Doc triplets=56, Overlap=0, F1=0.000
+2026-01-26 03:24:21,573 - INFO - Sample 1 (gold): Gold triplets=24, Overlap=0, F1=0.000
+  2%|▏         | 2/100 [2:06:22<98:29:43, 3618.20s/it] 2026-01-26 03:24:21,574 - INFO - Sample 2 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 03:27:32,047 - INFO - Sample 2: retry CoT generation (1/3)
+2026-01-26 03:30:42,088 - INFO - Sample 2: retry CoT generation (2/3)
+2026-01-26 03:33:52,077 - INFO - Sample 2: retry CoT generation (3/3)
+2026-01-26 03:37:01,580 - WARNING - Sample 2 CoT generation yielded empty output after retries.
+2026-01-26 03:37:01,581 - INFO - Sample 2 has no retrieved documents. Retrieving...
+2026-01-26 04:09:06,489 - INFO - Sample 2: CoT triplets=4, Doc triplets=44, Overlap=0, F1=0.000
+2026-01-26 04:09:06,498 - INFO - Sample 2 (gold): Gold triplets=13, Overlap=0, F1=0.000
+  3%|▎         | 3/100 [2:51:07<86:00:28, 3192.04s/it]2026-01-26 04:09:06,498 - INFO - Sample 3 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 04:13:04,109 - INFO - Sample 3: retry CoT generation (1/3)
+2026-01-26 04:17:01,435 - INFO - Sample 3: retry CoT generation (2/3)
+2026-01-26 04:20:58,893 - INFO - Sample 3: retry CoT generation (3/3)
+2026-01-26 04:24:56,204 - WARNING - Sample 3 CoT generation yielded empty output after retries.
+2026-01-26 04:24:56,205 - INFO - Sample 3 has no retrieved documents. Retrieving...
+2026-01-26 04:59:42,619 - INFO - Sample 3: CoT triplets=4, Doc triplets=46, Overlap=0, F1=0.000
+2026-01-26 04:59:42,627 - INFO - Sample 3 (gold): Gold triplets=23, Overlap=0, F1=0.000
+  4%|▍         | 4/100 [3:41:43<83:28:47, 3130.49s/it]2026-01-26 04:59:42,628 - INFO - Sample 4 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 05:03:57,957 - INFO - Sample 4: retry CoT generation (1/3)
+2026-01-26 05:08:09,659 - INFO - Sample 4: retry CoT generation (2/3)
+2026-01-26 05:12:21,438 - INFO - Sample 4: retry CoT generation (3/3)
+2026-01-26 05:16:33,256 - WARNING - Sample 4 CoT generation yielded empty output after retries.
+2026-01-26 05:16:33,257 - INFO - Sample 4 has no retrieved documents. Retrieving...
+2026-01-26 05:43:00,973 - INFO - Sample 4: CoT triplets=4, Doc triplets=40, Overlap=0, F1=0.000
+2026-01-26 05:43:00,974 - INFO - Sample 4 (gold): Gold triplets=10, Overlap=0, F1=0.000
+  5%|▌         | 5/100 [4:25:01<77:32:46, 2938.60s/it]2026-01-26 05:43:00,974 - INFO - Sample 5 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 05:46:56,389 - INFO - Sample 5: retry CoT generation (1/3)
+2026-01-26 05:50:51,962 - INFO - Sample 5: retry CoT generation (2/3)
+2026-01-26 05:54:47,198 - INFO - Sample 5: retry CoT generation (3/3)
+2026-01-26 05:58:42,557 - WARNING - Sample 5 CoT generation yielded empty output after retries.
+2026-01-26 05:58:42,558 - INFO - Sample 5 has no retrieved documents. Retrieving...
+2026-01-26 06:29:24,125 - INFO - Sample 5: CoT triplets=4, Doc triplets=46, Overlap=0, F1=0.000
+2026-01-26 06:29:24,134 - INFO - Sample 5 (gold): Gold triplets=20, Overlap=0, F1=0.000
+  6%|▌         | 6/100 [5:11:25<75:21:00, 2885.75s/it]2026-01-26 06:29:24,134 - INFO - Sample 6 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 06:32:46,949 - INFO - Sample 6: retry CoT generation (1/3)
+2026-01-26 06:36:09,475 - INFO - Sample 6: retry CoT generation (2/3)
+2026-01-26 06:39:32,223 - INFO - Sample 6: retry CoT generation (3/3)
+2026-01-26 06:42:54,813 - WARNING - Sample 6 CoT generation yielded empty output after retries.
+2026-01-26 06:42:54,814 - INFO - Sample 6 has no retrieved documents. Retrieving...
+2026-01-26 07:17:12,501 - INFO - Sample 6: CoT triplets=4, Doc triplets=44, Overlap=0, F1=0.000
+2026-01-26 07:17:12,510 - INFO - Sample 6 (gold): Gold triplets=25, Overlap=0, F1=0.000
+  7%|▋         | 7/100 [5:59:13<74:24:06, 2880.07s/it]2026-01-26 07:17:12,510 - INFO - Sample 7 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 07:20:36,199 - INFO - Sample 7: retry CoT generation (1/3)
+2026-01-26 07:23:58,941 - INFO - Sample 7: retry CoT generation (2/3)
+2026-01-26 07:27:21,505 - INFO - Sample 7: retry CoT generation (3/3)
+2026-01-26 07:30:44,318 - WARNING - Sample 7 CoT generation yielded empty output after retries.
+2026-01-26 07:30:44,319 - INFO - Sample 7 has no retrieved documents. Retrieving...
+2026-01-26 08:14:39,259 - INFO - Sample 7: CoT triplets=2, Doc triplets=52, Overlap=0, F1=0.000
+2026-01-26 08:14:39,268 - INFO - Sample 7 (gold): Gold triplets=37, Overlap=0, F1=0.000
+  8%|▊         | 8/100 [6:56:40<78:12:43, 3060.48s/it]2026-01-26 08:14:39,268 - INFO - Sample 8 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 08:18:17,145 - INFO - Sample 8: retry CoT generation (1/3)
+2026-01-26 08:21:54,572 - INFO - Sample 8: retry CoT generation (2/3)
+2026-01-26 08:25:32,254 - INFO - Sample 8: retry CoT generation (3/3)
+2026-01-26 08:29:09,770 - WARNING - Sample 8 CoT generation yielded empty output after retries.
+2026-01-26 08:29:09,771 - INFO - Sample 8 has no retrieved documents. Retrieving...
+2026-01-26 08:55:06,046 - INFO - Sample 8: CoT triplets=4, Doc triplets=41, Overlap=0, F1=0.000
+2026-01-26 08:55:06,047 - INFO - Sample 8 (gold): Gold triplets=11, Overlap=0, F1=0.000
+  9%|▉         | 9/100 [7:37:07<72:21:15, 2862.37s/it]2026-01-26 08:55:06,047 - INFO - Sample 9 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 08:58:45,480 - INFO - Sample 9: retry CoT generation (1/3)
+2026-01-26 09:02:24,520 - INFO - Sample 9: retry CoT generation (2/3)
+2026-01-26 09:06:03,694 - INFO - Sample 9: retry CoT generation (3/3)
+2026-01-26 09:09:43,284 - WARNING - Sample 9 CoT generation yielded empty output after retries.
+2026-01-26 09:09:43,285 - INFO - Sample 9 has no retrieved documents. Retrieving...
+2026-01-26 09:38:33,042 - INFO - Sample 9: CoT triplets=6, Doc triplets=51, Overlap=0, F1=0.000
+2026-01-26 09:38:33,050 - INFO - Sample 9 (gold): Gold triplets=10, Overlap=0, F1=0.000
+ 10%|█         | 10/100 [8:20:34<69:35:18, 2783.53s/it]2026-01-26 09:38:33,051 - INFO - Sample 10 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 09:42:12,356 - INFO - Sample 10: retry CoT generation (1/3)
+2026-01-26 09:45:51,568 - INFO - Sample 10: retry CoT generation (2/3)
+2026-01-26 09:49:30,848 - INFO - Sample 10: retry CoT generation (3/3)
+2026-01-26 09:53:12,996 - WARNING - Sample 10 CoT generation yielded empty output after retries.
+2026-01-26 09:53:12,997 - INFO - Sample 10 has no retrieved documents. Retrieving...
+2026-01-26 10:25:03,463 - INFO - Sample 10: CoT triplets=5, Doc triplets=52, Overlap=0, F1=0.000
+2026-01-26 10:25:03,471 - INFO - Sample 10 (gold): Gold triplets=21, Overlap=0, F1=0.000
+ 11%|█         | 11/100 [9:07:04<68:52:02, 2785.64s/it]2026-01-26 10:25:03,472 - INFO - Sample 11 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 10:28:37,796 - INFO - Sample 11: retry CoT generation (1/3)
+2026-01-26 10:32:10,259 - INFO - Sample 11: retry CoT generation (2/3)
+2026-01-26 10:35:43,253 - INFO - Sample 11: retry CoT generation (3/3)
+2026-01-26 10:39:15,213 - WARNING - Sample 11 CoT generation yielded empty output after retries.
+2026-01-26 10:39:15,213 - INFO - Sample 11 has no retrieved documents. Retrieving...
+2026-01-26 11:04:38,377 - INFO - Sample 11: CoT triplets=5, Doc triplets=44, Overlap=0, F1=0.000
+2026-01-26 11:04:38,386 - INFO - Sample 11 (gold): Gold triplets=12, Overlap=0, F1=0.000
+ 12%|█▏        | 12/100 [9:46:39<65:02:21, 2660.69s/it]2026-01-26 11:04:38,386 - INFO - Sample 12 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 11:07:53,151 - INFO - Sample 12: retry CoT generation (1/3)
+2026-01-26 11:11:07,746 - INFO - Sample 12: retry CoT generation (2/3)
+2026-01-26 11:14:22,611 - INFO - Sample 12: retry CoT generation (3/3)
+2026-01-26 11:17:37,175 - WARNING - Sample 12 CoT generation yielded empty output after retries.
+2026-01-26 11:17:37,176 - INFO - Sample 12 has no retrieved documents. Retrieving...
+2026-01-26 11:52:56,802 - INFO - Sample 12: CoT triplets=4, Doc triplets=50, Overlap=0, F1=0.000
+2026-01-26 11:52:56,810 - INFO - Sample 12 (gold): Gold triplets=31, Overlap=0, F1=0.000
+ 13%|█▎        | 13/100 [10:34:57<66:02:25, 2732.71s/it]2026-01-26 11:52:56,811 - INFO - Sample 13 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 11:56:08,713 - INFO - Sample 13: retry CoT generation (1/3)
+2026-01-26 11:59:20,548 - INFO - Sample 13: retry CoT generation (2/3)
+2026-01-26 12:02:32,515 - INFO - Sample 13: retry CoT generation (3/3)
+2026-01-26 12:05:44,356 - WARNING - Sample 13 CoT generation yielded empty output after retries.
+2026-01-26 12:05:44,356 - INFO - Sample 13 has no retrieved documents. Retrieving...
+2026-01-26 12:37:14,273 - INFO - Sample 13: CoT triplets=4, Doc triplets=44, Overlap=0, F1=0.000
+2026-01-26 12:37:14,280 - INFO - Sample 13 (gold): Gold triplets=19, Overlap=0, F1=0.000
+ 14%|█▍        | 14/100 [11:19:15<64:44:18, 2709.98s/it]2026-01-26 12:37:14,281 - INFO - Sample 14 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 12:40:35,487 - INFO - Sample 14: retry CoT generation (1/3)
+2026-01-26 12:44:15,346 - INFO - Sample 14: retry CoT generation (2/3)
+2026-01-26 12:47:10,882 - INFO - Sample 14: retry CoT generation (3/3)
+2026-01-26 12:50:39,931 - WARNING - Sample 14 CoT generation yielded empty output after retries.
+2026-01-26 12:50:39,932 - INFO - Sample 14 has no retrieved documents. Retrieving...
+2026-01-26 13:29:02,704 - INFO - Sample 14: CoT triplets=3, Doc triplets=54, Overlap=0, F1=0.000
+2026-01-26 13:29:02,714 - INFO - Sample 14 (gold): Gold triplets=28, Overlap=0, F1=0.000
+ 15%|█▌        | 15/100 [12:11:03<66:49:17, 2830.09s/it]2026-01-26 13:29:02,715 - INFO - Sample 15 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 13:32:53,178 - INFO - Sample 15: retry CoT generation (1/3)
+2026-01-26 13:36:42,704 - INFO - Sample 15: retry CoT generation (2/3)
+2026-01-26 13:40:32,281 - INFO - Sample 15: retry CoT generation (3/3)
+2026-01-26 13:44:22,006 - WARNING - Sample 15 CoT generation yielded empty output after retries.
+2026-01-26 13:44:22,007 - INFO - Sample 15 has no retrieved documents. Retrieving...
+2026-01-26 14:13:13,841 - INFO - Sample 15: CoT triplets=4, Doc triplets=38, Overlap=0, F1=0.000
+2026-01-26 14:13:13,841 - INFO - Sample 15 (gold): Gold triplets=8, Overlap=0, F1=0.000
+ 16%|█▌        | 16/100 [12:55:14<64:46:42, 2776.22s/it]2026-01-26 14:13:13,842 - INFO - Sample 16 has no CoT reasoning/triplets or force regen is set. Generating...
+2026-01-26 14:17:23,034 - INFO - Sample 16: retry CoT generation (1/3)
+2026-01-26 14:21:03,883 - INFO - Sample 16: retry CoT generation (2/3)
+2026-01-26 14:24:44,755 - INFO - Sample 16: retry CoT generation (3/3)
+2026-01-26 14:28:25,514 - WARNING - Sample 16 CoT generation yielded empty output after retries.
+2026-01-26 14:28:25,515 - INFO - Sample 16 has no retrieved documents. Retrieving...
+slurmstepd-n02: error: *** JOB 107447 ON n02 CANCELLED AT 2026-01-26T14:42:37 ***
