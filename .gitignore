@@ -47,4 +47,10 @@ logs/
 
 # Large files
 **/train.json
-**/train_unsampled.json
+**/train_unsampled.jsonmultihopqa/hf_cache/
+*.safetensors
+multihopqa/hf_cache/
+*.safetensors
+hf_cache/ multihopqa/hf_cache/
+*.safetensors
+hf_cache/
