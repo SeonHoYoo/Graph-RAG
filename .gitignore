@@ -35,15 +35,12 @@ Thumbs.db
 .legacy/
 **/.legacy/
 
-# Logs
-.logs
 
 # Temp
 .temp
 
 # Results
 results/
-logs/
 
 # Large files
 **/train.json
