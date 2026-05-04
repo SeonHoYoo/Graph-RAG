@@ -54,3 +54,5 @@ multihopqa/hf_cache/
 hf_cache/ multihopqa/hf_cache/
 *.safetensors
 hf_cache/
+multihopqa/hf_cache/
+*.safetensors
