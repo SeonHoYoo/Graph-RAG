@@ -154,6 +154,36 @@ class SearchR1Inference:
             return "\n".join(match.strip() for match in matches)
         return ""
 
+    def _extract_reasoning_steps(self, text: str) -> list:
+        """Extract each reasoning step from <think> tags in order."""
+        pattern = re.compile(r"<think>(.*?)</think>", re.DOTALL)
+        return [match.strip() for match in pattern.findall(text) if match.strip()]
+
+    def _build_result(
+        self,
+        question: str,
+        prompt: str,
+        full_response: str,
+        cnt: int,
+        retrieval_turns: list,
+        total_search_results: list,
+        last_search_results_list: list,
+        initial_thinking: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        return {
+            "question": question,
+            "prompt": prompt,
+            "initial_thinking": initial_thinking,
+            "full_response": full_response,
+            "predicted_answer": self._extract_answer(full_response),
+            "reasoning_path": self._extract_reasoning(full_response),
+            "reasoning_steps": self._extract_reasoning_steps(full_response),
+            "num_turns": cnt,
+            "retrieval_turns": retrieval_turns,
+            "total_search_results": total_search_results,
+            "last_search_results_list": last_search_results_list,
+        }
+
     def infer(self, question: str, verbose: bool = False) -> Dict[str, Any]:
         """
         Perform inference on a question
@@ -238,6 +268,8 @@ If you find no further external knowledge needed, you can directly provide the a
                 turn_info = {
                     "turn": cnt,
                     "query": tmp_query,
+                    "model_output": output_text,
+                    "search_results": last_search_results_list.copy(),
                     "retrieved_docs": [],
                 }
 
@@ -268,23 +300,19 @@ If you find no further external knowledge needed, you can directly provide the a
             if verbose:
                 print(search_text)
 
-        # Extract final answer and reasoning
-        predicted_answer = self._extract_answer(full_response)
-        reasoning_path = self._extract_reasoning(full_response)
-
         print("Question:", question)
         print("Full Response:", full_response)
         print("\n===\n")
 
-        return {
-            "full_response": full_response,
-            "predicted_answer": predicted_answer,
-            "reasoning_path": reasoning_path,
-            "num_turns": cnt,
-            "retrieval_turns": retrieval_turns,
-            "total_search_results": total_search_results,
-            "last_search_results_list": last_search_results_list
-        }
+        return self._build_result(
+            question=question,
+            prompt=prompt,
+            full_response=full_response,
+            cnt=cnt,
+            retrieval_turns=retrieval_turns,
+            total_search_results=total_search_results,
+            last_search_results_list=last_search_results_list,
+        )
 
     def infer_with_nudge(self, question: str, thinking: str, verbose: bool = False) -> Dict[str, Any]:
         """
@@ -372,6 +400,8 @@ If you find no further external knowledge needed, you can directly provide the a
                 turn_info = {
                     "turn": cnt,
                     "query": tmp_query,
+                    "model_output": output_text,
+                    "search_results": last_search_results_list.copy(),
                     "retrieved_docs": [],
                 }
 
@@ -402,24 +432,21 @@ If you find no further external knowledge needed, you can directly provide the a
             if verbose:
                 print(search_text)
 
-        # Extract final answer and reasoning
-        predicted_answer = self._extract_answer(full_response)
-        reasoning_path = self._extract_reasoning(full_response)
-
         #print("Question:", question)
         print(prompt)
         # print("Full Response:", full_response)
         print("\n===\n")
 
-        return {
-            "full_response": full_response,
-            "predicted_answer": predicted_answer,
-            "reasoning_path": reasoning_path,
-            "num_turns": cnt,
-            "retrieval_turns": retrieval_turns,
-            "total_search_results": total_search_results,
-            "last_search_results_list": last_search_results_list
-        }
+        return self._build_result(
+            question=question,
+            prompt=prompt,
+            full_response=full_response,
+            cnt=cnt,
+            retrieval_turns=retrieval_turns,
+            total_search_results=total_search_results,
+            last_search_results_list=last_search_results_list,
+            initial_thinking=thinking,
+        )
 
 
 # Example usage when run as script

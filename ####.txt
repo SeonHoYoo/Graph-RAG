@@ -1,0 +1,1 @@
+sbatch /home/hyeseojeon/data/multihopqa/Search-R1/retrieval_launch_bm25.sh

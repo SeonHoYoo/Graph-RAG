@@ -32,7 +32,11 @@ class ConstructModel():
             client = anthropic.Anthropic(api_key=api_key)
             self.construct_model = Claude(construct_model_name, client)
         
-        elif construct_model_name.lower().startswith("qwen"):
+        elif (
+            construct_model_name.lower().startswith("qwen")
+            or construct_model_name.lower().startswith("meta-llama")
+            or construct_model_name.lower().startswith("llama")
+        ):
             model = AutoModelForCausalLM.from_pretrained(
                 construct_model_name,
                 dtype="auto",

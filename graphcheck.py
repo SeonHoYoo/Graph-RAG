@@ -350,7 +350,7 @@ class GraphCheck(Direct):
                 "infilling_query": infilling_query, 
                 "infilling_answer": answer, 
                 "infilling_confidence": conf,
-                "infilling_retrieval_info": {k: str(v) for k, v in retrieval_info.items()} if retrieval_info else None
+                "infilling_retrieval_info": retrieval_info if retrieval_info else None
             })
         
         avg_conf = sum(conf_list) / len(conf_list) if conf_list else 0.0
@@ -388,7 +388,7 @@ class GraphCheck(Direct):
                 "subclaim_prediction": subclaim_prediction,
                 "average_verification_confidence": avg_conf,
                 "last_verification_confidence": last_conf,
-                "retrieval_info": {k: str(v) for k, v in retrieval_info.items()} if retrieval_info else None,
+                "retrieval_info": retrieval_info if retrieval_info else None,
                 "supported_doc_id": supported_doc_id
             })
             if subclaim_prediction == "SUPPORTED":
@@ -480,7 +480,7 @@ class GraphCheck(Direct):
                 })
 
                 if self.use_searchr1 and self.nudge_searchr1:
-                    verification_process[-1]["searchr1_retrieval_info"] = {k: str(v) for k, v in retrieval_info.items()} if retrieval_info else None
+                    verification_process[-1]["searchr1_retrieval_info"] = retrieval_info if retrieval_info else None
 
                 verification_process[-1]["infilling_log"] = infilling_log
                 verification_process[-1]["path_verification"] = path_verification
@@ -644,4 +644,3 @@ if __name__ == "__main__":
     verifier = GraphCheck(args)
     result_list = verifier.run_graphcheck()
     verifier.save_result(result_list, verifier.graphcheck_path)
-

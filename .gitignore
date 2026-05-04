@@ -41,6 +41,10 @@ Thumbs.db
 # Temp
 .temp
 
+# Results
+results/
+logs/
+
 # Large files
 **/train.json
 **/train_unsampled.json

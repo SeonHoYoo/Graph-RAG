@@ -283,8 +283,16 @@ class Direct:
         if "open-book" in self.setting and use_searchr1:            
             retrieval_info["full_response"] = search_info.get("full_response", "")
             retrieval_info["searchr1_answer"] = search_info.get("predicted_answer", "")
+            retrieval_info["searchr1_reasoning_path"] = search_info.get("reasoning_path", "")
+            retrieval_info["searchr1_reasoning_steps"] = search_info.get("reasoning_steps", [])
+            retrieval_info["searchr1_prompt"] = search_info.get("prompt", "")
+            retrieval_info["searchr1_question"] = search_info.get("question", query)
+            retrieval_info["searchr1_initial_thinking"] = search_info.get("initial_thinking")
             retrieval_info["num_turns"] = search_info.get("num_turns", 0)
             retrieval_info["retrieval_turns"] = search_info.get("retrieval_turns", [])
+            retrieval_info["searchr1_total_search_results"] = search_info.get("total_search_results", [])
+            retrieval_info["searchr1_last_search_results_list"] = search_info.get("last_search_results_list", [])
+            retrieval_info["searchr1_trace"] = search_info
 
         return evidence_list, retrieval_info
 
@@ -491,4 +499,3 @@ if __name__ == "__main__":
     verifier = Direct(args)
     result_list = verifier.run_direct()
     verifier.save_result(result_list, verifier.direct_path)        
-

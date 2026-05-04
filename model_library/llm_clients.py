@@ -1,7 +1,5 @@
-import anthropic
 import json
 import logging
-from openai import OpenAI
 import os
 import time
 import torch
@@ -47,7 +45,8 @@ class GPT:
             messages=messages,
             max_tokens=max_tokens,
             temperature=temperature,
-            top_p=top_p
+            top_p=top_p,
+            seed=42
         )
         return response.choices[0].message.content.strip()
     
