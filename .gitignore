@@ -40,7 +40,8 @@ Thumbs.db
 .temp
 
 # Results
-results/
+results/latent
+logs/
 
 # Large files
 **/train.json
