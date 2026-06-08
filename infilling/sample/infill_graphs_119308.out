@@ -1,0 +1,11 @@
+========== infill_graphs.sh Config ==========
+SLURM_JOB_ID=119308
+model_name=Qwen/Qwen2.5-7B-Instruct
+data_file=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+output_dir=/data3/seonhoyoo/graphcheck-qa/infilling/output
+infill_strategy=triplet_only
+question_strategy=triplet_only
+use_gold_only=1
+max_trials=3
+=============================================
+Command: python -u scripts/infill_graphs.py --model_name Qwen/Qwen2.5-7B-Instruct --data_file /data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json --output_dir /data3/seonhoyoo/graphcheck-qa/infilling/output --infill_strategy triplet_only --question_strategy triplet_only --use_gold_only 1 --max_trials 3

@@ -1,342 +1,14 @@
 construction_prompt = """
-Decompose each question into triples following the rules below:
+Decompose each question into triples following the guidelines below:
 # Latent Entities:
-- Identify latent entities that must be resolved to answer the question.
-- Define each latent entity as `(ENTk) [SEP] is [SEP] ...`.
-- If the question compares attributes of multiple entities, use separate latent placeholders for each attribute. Do not merge them during decomposition.
+- (Identification) Firstly, identify any latent entities (i.e., implicit references not directly mentioned in the question that need to be clarified).
+- (Definition) Define these identified latent entities in triple format, using placeholders like (ENT1), (ENT2), etc.
 # Triples:
-- Output the minimal set of verifiable triples needed to answer the question.
-- Each triple must be exactly: `subject [SEP] relation [SEP] object`.
-- Use `[PREP]` only when the prepositional phrase cannot be separated without changing the meaning.
-- Resolve pronouns to explicit entities.
-- Reuse the same string only for the same real-world entity. Do not merge different entities or latent placeholders just because they are compared.
-
-# Question:
-In which country is Adams Township located?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a country
-# Triples:
-Adams Township [SEP] is located in [SEP] (ENT1)
-
-# Question:
-In what part of California is the Pacific Coast Air Museum located?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a region
-# Triples:
-(ENT1) [SEP] is part of [SEP] California
-Pacific Coast Air Museum [SEP] is located in [SEP] (ENT1)
-
-# Question:
-What genre does the composer of New York Counterpoint work in?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a genre
-(ENT2) [SEP] is [SEP] an individual
-# Triples:
-(ENT2) [SEP] works in [SEP] (ENT1)
-(ENT2) [SEP] composed [SEP] New York Counterpoint
-
-# Question:
-When did the ball drop start in the state where Amalie Schoppe died?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a date
-(ENT2) [SEP] is [SEP] a state
-# Triples:
-The ball drop [SEP] started in [SEP] (ENT2) [PREP] on (ENT1)
-Amalie Schoppe [SEP] died in [SEP] (ENT2)
-
-# Question:
-When is dry season in the country where Sam Mangwana is a citizen?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a period
-(ENT2) [SEP] is [SEP] a country
-# Triples:
-(ENT1) [SEP] is dry season in [SEP] (ENT2)
-Sam Mangwana [SEP] is a citizen of [SEP] (ENT2)
-
-# Question:
-What year saw the formation of the band that released the album Ohio Is for Lovers?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a year
-(ENT2) [SEP] is [SEP] a band
-# Triples:
-(ENT2) [SEP] was formed in [SEP] (ENT1)
-(ENT2) [SEP] released [SEP] the album Ohio Is for Lovers
-
-# Question:
-Who is the programming language that includes the UPDATE statement partially named after?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] an individual
-(ENT2) [SEP] is [SEP] a programming language
-# Triples:
-(ENT2) [SEP] is partially named after [SEP] (ENT1)
-(ENT2) [SEP] includes [SEP] the UPDATE statement
-
-# Question:
-How many fish species live in the river that has the largest basin?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a number
-(ENT2) [SEP] is [SEP] a river
-(ENT3) [SEP] is [SEP] the largest basin
-# Triples:
-(ENT1) fish species [SEP] live in [SEP] (ENT2)
-(ENT2) [SEP] has [SEP] (ENT3)
-
-# Question:
-How much glaciation disappeared in the country where, along with Germany and the country where Monte Rosa Hotel is located, Lake Constance can be found?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] an amount of glaciation
-(ENT2) [SEP] is [SEP] a country
-(ENT3) [SEP] is [SEP] a country
-# Triples:
-(ENT1) [SEP] disappeared in [SEP] (ENT2)
-Lake Constance [SEP] can be found in [SEP] (ENT2) [PREP] along with Germany and (ENT3)
-Monte Rosa Hotel [SEP] is located in [SEP] (ENT3)
-
-# Question:
-What are the biggest terrorist attacks by the group with which Bush said the war on terror begins against the country where where the 1876 Centennial Exposition took place?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] the biggest terrorist attacks
-(ENT2) [SEP] is [SEP] a group
-(ENT3) [SEP] is [SEP] a country
-# Triples:
-(ENT1) [SEP] were carried out by [SEP] (ENT2) [PREP] against (ENT3)
-Bush [SEP] said [SEP] the war on terror begins with (ENT2)
-1876 Centennial Exposition [SEP] took place in [SEP] (ENT3)
-
-# Question:
-<<target_question>>
-"""
-
-
-latent_detection_prompt_musique = """
-Identify latent entities in the question using the rules below:
-- Output only latent-entity definitions.
-- Each line must be exactly: `(ENTk) [SEP] is [SEP] ...`.
-- If there are no latent entities, output nothing.
-- If the question compares attributes of multiple entities, use separate latent placeholders for each attribute. Do not merge them during decomposition.
-
-# Question:
-In which country is Adams Township located?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a country
-
-# Question:
-In what part of California is the Pacific Coast Air Museum located?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a region
-
-# Question:
-What genre does the composer of New York Counterpoint work in?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a genre
-(ENT2) [SEP] is [SEP] an individual
-
-# Question:
-When did the ball drop start in the state where Amalie Schoppe died?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a date
-(ENT2) [SEP] is [SEP] a state
-
-# Question:
-When is dry season in the country where Sam Mangwana is a citizen?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a period
-(ENT2) [SEP] is [SEP] a country
-
-# Question:
-What year saw the formation of the band that released the album Ohio Is for Lovers?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a year
-(ENT2) [SEP] is [SEP] a band
-
-# Question:
-Who is the programming language that includes the UPDATE statement partially named after?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] an individual
-(ENT2) [SEP] is [SEP] a programming language
-
-# Question:
-How many fish species live in the river that has the largest basin?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a number
-(ENT2) [SEP] is [SEP] a river
-(ENT3) [SEP] is [SEP] the largest basin
-
-# Question:
-How much glaciation disappeared in the country where, along with Germany and the country where Monte Rosa Hotel is located, Lake Constance can be found?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] an amount of glaciation
-(ENT2) [SEP] is [SEP] a country
-(ENT3) [SEP] is [SEP] a country
-
-# Question:
-What are the biggest terrorist attacks by the group with which Bush said the war on terror begins against the country where where the 1876 Centennial Exposition took place?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] the biggest terrorist attacks
-(ENT2) [SEP] is [SEP] a group
-(ENT3) [SEP] is [SEP] a country
-
-# Question:
-<<target_question>>
-# Latent Entities:
-"""
-
-
-latent_detection_prompt_hotpotqa = """
-Identify latent entities in the question using the rules below:
-- Output only latent-entity definitions.
-- Each line must be exactly: `(ENTk) [SEP] is [SEP] ...`.
-- If there are no latent entities, output nothing.
-- If the question compares attributes of multiple entities, use separate latent placeholders for each attribute. Do not merge them during decomposition.
-
-# Question:
-What type of music do Freddie Hart and Earl Poole Ball both write?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a type of music
-
-# Question:
-Which star from The Ghazi Attack won the State Nandi Award for Best Special Effects in 2006?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] an individual
-
-# Question:
-Are Give Us Our Skeletons and Dave Chappelle's Block Party both comedies?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a genre
-
-# Question:
-Which film is also a Disney film, Condorman or Rob Roy, the Highland Rogue?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a film
-
-# Question:
-WRAF airs a religious program hosted by which founder and president of In Touch Ministries?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] an individual
-(ENT2) [SEP] is [SEP] a religious program
-
-# Question:
-What is the birthday of the older of Jacques Tourneur and Victor Salva?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a date 
-(ENT2) [SEP] is [SEP] an individual
-
-# Question:
-Thomas Vigliarolo is a business man from an island that has how many counties?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] an island
-(ENT2) [SEP] is [SEP] a number
-
-# Question:
-The filmmaker for Law and Disorder in Philadelphia holds citizenship where?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a country
-(ENT2) [SEP] is [SEP] an individual
-
-# Question:
-Which joint program with a public research university in Clear Water Bay Peninsula does Menachem Brenner teach for?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a joint program 
-(ENT2) [SEP] is [SEP] a public research university
-
-# Question:
-Bridge Plaza in Brooklyn is bordered on the west by the bridge that has a length of what?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a length
-(ENT2) [SEP] is [SEP] a bridge
-
-# Question:
-<<target_question>>
-# Latent Entities:
-"""
-
-
-latent_detection_prompt_2wikimultihopqa = """
-Identify latent entities in the question using the rules below:
-- Output only latent-entity definitions.
-- Each line must be exactly: `(ENTk) [SEP] is [SEP] ...`.
-- If there are no latent entities, output nothing.
-- If the question compares attributes of multiple entities, use separate latent placeholders for each attribute. Do not merge them during decomposition.
-
-# Question:
-Where did Margaret Flamsteed's husband die?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] an individual
-(ENT2) [SEP] is [SEP] a location
-
-# Question:
-Were David E. Finley Jr. and Loick Pires of the same nationality?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a nationality
-(ENT2) [SEP] is [SEP] a nationality
-
-# Question:
-Are Alkaline (Musician) and Mostafa Kamal Tolba both from the same country?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a country
-(ENT2) [SEP] is [SEP] a country
-
-# Question:
-Where was the director of film Funes, A Great Love born?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] an individual
-(ENT2) [SEP] is [SEP] a location
-
-# Question:
-Which university was established first, Salem State University or Jalalabad State University?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] a date
-(ENT2) [SEP] is [SEP] a date
-
-# Question:
-Which country the performer of song Too Much Water is from?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] an individual
-(ENT2) [SEP] is [SEP] a country
-
-# Question:
-Why did the performer of song Insatiable (Prince Song) die?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] an individual
-(ENT2) [SEP] is [SEP] a reason
-
-# Question:
-What is the award that the performer of song F\u00f6r Kung Och Fosterland won?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] an individual
-(ENT2) [SEP] is [SEP] an award
-
-# Question:
-Which film has the director who was born first, I Am (2010 American Documentary Film) or Bosundhora?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] an individual
-(ENT2) [SEP] is [SEP] an individual
-(ENT3) [SEP] is [SEP] a date
-(ENT4) [SEP] is [SEP] a date
-
-# Question:
-Do both films A Chorus Line (Film) and D\u00e9d\u00e9 (1989 Film) have the directors from the same country?
-# Latent Entities:
-(ENT1) [SEP] is [SEP] an individual
-(ENT2) [SEP] is [SEP] an individual
-(ENT3) [SEP] is [SEP] a country
-(ENT4) [SEP] is [SEP] a country
-
-# Question:
-<<target_question>>
-# Latent Entities:
-"""
-
-
-
-triplet_extraction_prompt_musique =  """
-Decompose each question into triples using the rules below:
-- Output the minimal set of verifiable triples needed to answer the question.
-- Each triple must be exactly: `subject [SEP] relation [SEP] object`.
-- Use `[PREP]` only when the prepositional phrase cannot be separated without changing the meaning.
-- Resolve pronouns to explicit entities.
-- Reuse the same string only for the same real-world entity. Do not merge different entities or latent placeholders just because they are compared.
-- Use the provided latent placeholders exactly as written.
+- (Basic Information Unit) Decompose the question into triples, ensuring you reach the most fundamental verifiable information while preserving the original meaning. Be careful not to lose important information during decomposition.
+- (Triple Structure) Each triple should follow this format: ‘subject [SEP] relation [SEP] object’. Both the subject and object should be noun phrases, while the relation should be a verb or verb phrase, forming a complete sentence.
+- (Prepositional Phrases) In exceptional cases where a prepositional phrase modifies the entire triple (rather than just the subject or object) and splitting it into another triple would alter the meaning of the question, do not divide it. Instead, append it to the end of the triple: ‘subject [SEP] relation [SEP] object [PREP] preposition phrase’.
+- (Pronoun Resolution) Replace any pronouns with the corresponding entities to ensure that each triple is self-contained and independent of external context.
+- (Entity Consistency) Use the exact same string to represent entities (i.e., the ‘subject’ or ‘object’) whenever they refer to the same entity across different triples.
 
 # Question:
 In which country is Adams Township located?
@@ -431,6 +103,391 @@ Bush [SEP] said [SEP] the war on terror begins with (ENT2)
 1876 Centennial Exposition [SEP] took place in [SEP] (ENT3)
 
 # Question:
+Which country is the performer of the song "Too Much Water" from?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an individual
+(ENT2) [SEP] is [SEP] a country
+# Triples:
+(ENT1) [SEP] is the performer of [SEP] the song "Too Much Water"
+(ENT1) [SEP] is from [SEP] (ENT2)
+
+# Question:
+Who played the performer of "One Minute Past Eternity" in Walk the Line?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] the performer of "One Minute Past Eternity"
+(ENT2) [SEP] is [SEP] an actor/performer in the movie "Walk the Line"
+# Triples:
+(ENT2) [SEP] plays [SEP] (ENT1) [PREP] in "Walk the Line"
+(ENT1) [SEP] performed [SEP] "One Minute Past Eternity"
+
+# Question:
+<<target_question>>
+"""
+
+
+latent_detection_prompt_musique = """
+Identify any latent entities in the given question, following the guidelines below:
+- (Identification) Firstly, identify any latent entities (i.e., implicit references not directly mentioned in the question that need to be clarified).
+- (Definition) Define these identified latent entities in triple format, using placeholders like (ENT1), (ENT2), etc.
+
+# Question:
+In which country is Adams Township located?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a country
+
+# Question:
+In what part of California is the Pacific Coast Air Museum located?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a region
+
+# Question:
+What genre does the composer of New York Counterpoint work in?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a genre
+(ENT2) [SEP] is [SEP] an individual
+
+# Question:
+When did the ball drop start in the state where Amalie Schoppe died?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a date
+(ENT2) [SEP] is [SEP] a state
+
+# Question:
+When is dry season in the country where Sam Mangwana is a citizen?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a period
+(ENT2) [SEP] is [SEP] a country
+
+# Question:
+What year saw the formation of the band that released the album Ohio Is for Lovers?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a year
+(ENT2) [SEP] is [SEP] a band
+
+# Question:
+Who is the programming language that includes the UPDATE statement partially named after?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an individual
+(ENT2) [SEP] is [SEP] a programming language
+
+# Question:
+How many fish species live in the river that has the largest basin?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a number
+(ENT2) [SEP] is [SEP] a river
+(ENT3) [SEP] is [SEP] the largest basin
+
+# Question:
+How much glaciation disappeared in the country where, along with Germany and the country where Monte Rosa Hotel is located, Lake Constance can be found?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an amount of glaciation
+(ENT2) [SEP] is [SEP] a country
+(ENT3) [SEP] is [SEP] a country
+
+# Question:
+What are the biggest terrorist attacks by the group with which Bush said the war on terror begins against the country where where the 1876 Centennial Exposition took place?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] the biggest terrorist attacks
+(ENT2) [SEP] is [SEP] a group
+(ENT3) [SEP] is [SEP] a country
+
+# Question:
+Which country is the performer of the song "Too Much Water" from?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an individual
+(ENT2) [SEP] is [SEP] a country
+
+# Question:
+Who played the performer of "One Minute Past Eternity" in Walk the Line?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] the performer of "One Minute Past Eternity"
+(ENT2) [SEP] is [SEP] an actor/performer in the movie "Walk the Line"
+
+# Question:
+<<target_question>>
+# Latent Entities:
+"""
+
+
+latent_detection_prompt_hotpotqa = """
+Identify any latent entities in the given question, following the guidelines below:
+- (Identification) Firstly, identify any latent entities (i.e., implicit references not directly mentioned in the question that need to be clarified).
+- (Definition) Define these identified latent entities in triple format, using placeholders like (ENT1), (ENT2), etc.
+
+# Question:
+What type of music do Freddie Hart and Earl Poole Ball both write?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a type of music
+
+# Question:
+Which star from The Ghazi Attack won the State Nandi Award for Best Special Effects in 2006?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an individual
+
+# Question:
+Are Give Us Our Skeletons and Dave Chappelle's Block Party both comedies?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a genre
+
+# Question:
+Which film is also a Disney film, Condorman or Rob Roy, the Highland Rogue?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a film
+
+# Question:
+WRAF airs a religious program hosted by which founder and president of In Touch Ministries?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an individual
+(ENT2) [SEP] is [SEP] a religious program
+
+# Question:
+What is the birthday of the older of Jacques Tourneur and Victor Salva?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a date 
+(ENT2) [SEP] is [SEP] an individual
+
+# Question:
+Thomas Vigliarolo is a business man from an island that has how many counties?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an island
+(ENT2) [SEP] is [SEP] a number
+
+# Question:
+The filmmaker for Law and Disorder in Philadelphia holds citizenship where?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a country
+(ENT2) [SEP] is [SEP] an individual
+
+# Question:
+Which joint program with a public research university in Clear Water Bay Peninsula does Menachem Brenner teach for?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a joint program 
+(ENT2) [SEP] is [SEP] a public research university
+
+# Question:
+Bridge Plaza in Brooklyn is bordered on the west by the bridge that has a length of what?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a length
+(ENT2) [SEP] is [SEP] a bridge
+
+# Question:
+<<target_question>>
+# Latent Entities:
+"""
+
+
+latent_detection_prompt_2wikimultihopqa = """
+Identify any latent entities in the given question, following the guidelines below:
+- (Identification) Firstly, identify any latent entities (i.e., implicit references not directly mentioned in the question that need to be clarified).
+- (Definition) Define these identified latent entities in triple format, using placeholders like (ENT1), (ENT2), etc.
+
+# Question:
+Where did Margaret Flamsteed's husband die?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an individual
+(ENT2) [SEP] is [SEP] a location
+
+# Question:
+Were David E. Finley Jr. and Loick Pires of the same nationality?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a nationality
+(ENT2) [SEP] is [SEP] a nationality
+
+# Question:
+Are Alkaline (Musician) and Mostafa Kamal Tolba both from the same country?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a country
+(ENT2) [SEP] is [SEP] a country
+
+# Question:
+Where was the director of film Funes, A Great Love born?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an individual
+(ENT2) [SEP] is [SEP] a location
+
+# Question:
+Which university was established first, Salem State University or Jalalabad State University?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a date
+(ENT2) [SEP] is [SEP] a date
+
+# Question:
+Which country the performer of song Too Much Water is from?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an individual
+(ENT2) [SEP] is [SEP] a country
+
+# Question:
+Why did the performer of song Insatiable (Prince Song) die?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an individual
+(ENT2) [SEP] is [SEP] a reason
+
+# Question:
+What is the award that the performer of song F\u00f6r Kung Och Fosterland won?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an individual
+(ENT2) [SEP] is [SEP] an award
+
+# Question:
+Which film has the director who was born first, I Am (2010 American Documentary Film) or Bosundhora?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an individual
+(ENT2) [SEP] is [SEP] an individual
+(ENT3) [SEP] is [SEP] a date
+(ENT4) [SEP] is [SEP] a date
+
+# Question:
+Do both films A Chorus Line (Film) and D\u00e9d\u00e9 (1989 Film) have the directors from the same country?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an individual
+(ENT2) [SEP] is [SEP] an individual
+(ENT3) [SEP] is [SEP] a country
+(ENT4) [SEP] is [SEP] a country
+
+# Question:
+<<target_question>>
+# Latent Entities:
+"""
+
+
+
+triplet_extraction_prompt_musique =  """
+Decompose each question into triples following the guidelines below:
+- (Basic Information Unit) Decompose the question into triples, ensuring you reach the most fundamental verifiable information while preserving the original meaning. Be careful not to lose important information during decomposition.
+- (Triple Structure) Each triple should follow this format: ‘subject [SEP] relation [SEP] object’. Both the subject and object should be noun phrases, while the relation should be a verb or verb phrase, forming a complete sentence.
+- (Prepositional Phrases) In exceptional cases where a prepositional phrase modifies the entire triple (rather than just the subject or object) and splitting it into another triple would alter the meaning of the question, do not divide it. Instead, append it to the end of the triple: ‘subject [SEP] relation [SEP] object [PREP] preposition phrase’.
+- (Pronoun Resolution) Replace any pronouns with the corresponding entities to ensure that each triple is self-contained and independent of external context.
+- (Entity Consistency) Use the exact same string to represent entities (i.e., the ‘subject’ or ‘object’) whenever they refer to the same entity across different triples.
+- (Latent Entities) Any latent entities (i.e., implicit references not directly mentioned in the question) are annotated in triple format with placeholders like (ENT1), (ENT2), etc. Use those placeholders consistently throughout the triples.
+- (Casting QA special rule) If the question matches patterns like “Who is played by <descriptor> in <movie>?” (또는 “<배우 설명>이 연기한 인물은?”):
+  * ENT1 = ROLE/character (정답), ENT2 = PERSON/actor (설명을 가진 실존 인물)
+  * Do NOT attach the descriptor to the ROLE; attach it to the PERSON only.
+  * Required triples:
+    - (ENT2) [SEP] plays [SEP] (ENT1) [PREP] in "<movie title>"
+    - (ENT2) [SEP] has_attribute [SEP] "<descriptor>" (use evidence wording)
+- (Output Format) Do NOT add numbering or bullets. Output only raw triples.
+
+# Question:
+In which country is Adams Township located?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a country
+# Triples:
+Adams Township [SEP] is located in [SEP] (ENT1)
+
+# Question:
+In what part of California is the Pacific Coast Air Museum located?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a region
+# Triples:
+(ENT1) [SEP] is part of [SEP] California
+Pacific Coast Air Museum [SEP] is located in [SEP] (ENT1)
+
+# Question:
+What genre does the composer of New York Counterpoint work in?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a genre
+(ENT2) [SEP] is [SEP] an individual
+# Triples:
+(ENT2) [SEP] works in [SEP] (ENT1)
+(ENT2) [SEP] composed [SEP] New York Counterpoint
+
+# Question:
+When did the ball drop start in the state where Amalie Schoppe died?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a date
+(ENT2) [SEP] is [SEP] a state
+# Triples:
+the ball drop [SEP] started in [SEP] (ENT2) [PREP] on (ENT1)
+Amalie Schoppe [SEP] died in [SEP] (ENT2)
+
+# Question:
+When is dry season in the country where Sam Mangwana is a citizen?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a period
+(ENT2) [SEP] is [SEP] a country
+# Triples:
+(ENT1) [SEP] is dry season in [SEP] (ENT2)
+Sam Mangwana [SEP] is a citizen of [SEP] (ENT2)
+
+# Question:
+What year saw the formation of the band that released the album Ohio Is for Lovers?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a year
+(ENT2) [SEP] is [SEP] a band
+# Triples:
+(ENT2) [SEP] was formed in [SEP] (ENT1)
+(ENT2) [SEP] released [SEP] the album Ohio Is for Lovers
+
+# Question:
+Who is the programming language that includes the UPDATE statement partially named after?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an individual
+(ENT2) [SEP] is [SEP] a programming language
+# Triples:
+(ENT2) [SEP] is partially named after [SEP] (ENT1)
+(ENT2) [SEP] includes [SEP] the UPDATE statement
+
+# Question:
+How many fish species live in the river that has the largest basin?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a number
+(ENT2) [SEP] is [SEP] a river
+(ENT3) [SEP] is [SEP] the largest basin
+# Triples:
+(ENT1) fish species [SEP] live in [SEP] (ENT2)
+(ENT2) [SEP] has [SEP] (ENT3)
+
+# Question:
+How much glaciation disappeared in the country where, along with Germany and the country where Monte Rosa Hotel is located, Lake Constance can be found?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an amount of glaciation
+(ENT2) [SEP] is [SEP] a country
+(ENT3) [SEP] is [SEP] a country
+# Triples:
+(ENT1) [SEP] disappeared in [SEP] (ENT2)
+Lake Constance [SEP] can be found in [SEP] (ENT2) [PREP] along with Germany and (ENT3)
+Monte Rosa Hotel [SEP] is located in [SEP] (ENT3)
+
+# Question:
+What are the biggest terrorist attacks by the group with which Bush said the war on terror begins against the country where where the 1876 Centennial Exposition took place?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] the biggest terrorist attacks
+(ENT2) [SEP] is [SEP] a group
+(ENT3) [SEP] is [SEP] a country
+# Triples:
+(ENT1) [SEP] were carried out by [SEP] (ENT2) [PREP] against (ENT3)
+Bush [SEP] said [SEP] the war on terror begins with (ENT2)
+1876 Centennial Exposition [SEP] took place in [SEP] (ENT3)
+
+# Question:
+Which country is the performer of the song "Too Much Water" from?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] an individual
+(ENT2) [SEP] is [SEP] a country
+# Triples:
+(ENT1) [SEP] is the performer of [SEP] the song "Too Much Water"
+(ENT1) [SEP] is from [SEP] (ENT2)
+
+# Question:
+Who played the performer of "One Minute Past Eternity" in Walk the Line?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] the performer of "One Minute Past Eternity"
+(ENT2) [SEP] is [SEP] an actor/performer in the movie "Walk the Line"
+# Triples:
+(ENT2) [SEP] plays [SEP] (ENT1) [PREP] in "Walk the Line"
+(ENT1) [SEP] performed [SEP] "One Minute Past Eternity"
+
+# Question:
+Who is played by an acclaimed role model businesswoman in "Example Film"?
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a role in the movie "Example Film"
+(ENT2) [SEP] is [SEP] an actor
+# Triples:
+(ENT2) [SEP] plays [SEP] (ENT1) [PREP] in "Example Film"
+(ENT2) [SEP] has_attribute [SEP] "acclaimed role model businesswoman"
+
+# Question:
 <<target_question>>
 # Latent Entities:
 <<target_latent_entities>>
@@ -439,13 +496,13 @@ Bush [SEP] said [SEP] the war on terror begins with (ENT2)
 
 
 triplet_extraction_prompt_hotpotqa =  """
-Decompose each question into triples using the rules below:
-- Output the minimal set of verifiable triples needed to answer the question.
-- Each triple must be exactly: `subject [SEP] relation [SEP] object`.
-- Use `[PREP]` only when the prepositional phrase cannot be separated without changing the meaning.
-- Resolve pronouns to explicit entities.
-- Reuse the same string only for the same real-world entity. Do not merge different entities or latent placeholders just because they are compared.
-- Use the provided latent placeholders exactly as written.
+Decompose each question into triples following the guidelines below:
+- (Basic Information Unit) Decompose the question into triples, ensuring you reach the most fundamental verifiable information while preserving the original meaning. Be careful not to lose important information during decomposition.
+- (Triple Structure) Each triple should follow this format: ‘subject [SEP] relation [SEP] object’. Both the subject and object should be noun phrases, while the relation should be a verb or verb phrase, forming a complete sentence.
+- (Prepositional Phrases) In exceptional cases where a prepositional phrase modifies the entire triple (rather than just the subject or object) and splitting it into another triple would alter the meaning of the question, do not divide it. Instead, append it to the end of the triple: ‘subject [SEP] relation [SEP] object [PREP] preposition phrase’.
+- (Pronoun Resolution) Replace any pronouns with the corresponding entities to ensure that each triple is self-contained and independent of external context.
+- (Entity Consistency) Use the exact same string to represent entities (i.e., the ‘subject’ or ‘object’) whenever they refer to the same entity across different triples.
+- (Latent Entities) Any latent entities (i.e., implicit references not directly mentioned in the question) are annotated in triple format with placeholders like (ENT1), (ENT2), etc. Use those placeholders consistently throughout the triples.
 
 # Question:
 What type of music do Freddie Hart and Earl Poole Ball both write?
@@ -545,13 +602,13 @@ Bridge Plaza in Brooklyn [SEP] is bordered on the west by [SEP] (ENT2)
 
 
 triplet_extraction_prompt_2wikimultihopqa =  """
-Decompose each question into triples using the rules below:
-- Output the minimal set of verifiable triples needed to answer the question.
-- Each triple must be exactly: `subject [SEP] relation [SEP] object`.
-- Use `[PREP]` only when the prepositional phrase cannot be separated without changing the meaning.
-- Resolve pronouns to explicit entities.
-- Reuse the same string only for the same real-world entity. Do not merge different entities or latent placeholders just because they are compared.
-- Use the provided latent placeholders exactly as written.
+Decompose each question into triples following the guidelines below:
+- (Basic Information Unit) Decompose the question into triples, ensuring you reach the most fundamental verifiable information while preserving the original meaning. Be careful not to lose important information during decomposition.
+- (Triple Structure) Each triple should follow this format: ‘subject [SEP] relation [SEP] object’. Both the subject and object should be noun phrases, while the relation should be a verb or verb phrase, forming a complete sentence.
+- (Prepositional Phrases) In exceptional cases where a prepositional phrase modifies the entire triple (rather than just the subject or object) and splitting it into another triple would alter the meaning of the question, do not divide it. Instead, append it to the end of the triple: ‘subject [SEP] relation [SEP] object [PREP] preposition phrase’.
+- (Pronoun Resolution) Replace any pronouns with the corresponding entities to ensure that each triple is self-contained and independent of external context.
+- (Entity Consistency) Use the exact same string to represent entities (i.e., the ‘subject’ or ‘object’) whenever they refer to the same entity across different triples.
+- (Latent Entities) Any latent entities (i.e., implicit references not directly mentioned in the question) are annotated in triple format with placeholders like (ENT1), (ENT2), etc. Use those placeholders consistently throughout the triples.
 
 # Question:
 Where did Margaret Flamsteed's husband die?
@@ -666,8 +723,13 @@ Extract triples from the given Chain-of-Thought reasoning path following the gui
 - (Triple Structure) Each triple should follow this format: 'subject [SEP] relation [SEP] object'. Both the subject and object should be noun phrases, while the relation should be a verb or verb phrase, forming a complete sentence.
 - (Prepositional Phrases) In exceptional cases where a prepositional phrase modifies the entire triple, append it to the end: 'subject [SEP] relation [SEP] object [PREP] preposition phrase'.
 - (Pronoun Resolution) Replace any pronouns with the corresponding entities to ensure that each triple is self-contained.
-- (Entity Consistency) Use the exact same string only when two mentions refer to the same concrete real-world entity across different triples. Do not merge different latent placeholders or different entities just because the reasoning later compares them or asks whether they are the same.
+- (Entity Consistency) Use the exact same string to represent entities whenever they refer to the same entity across different triples.
 - (Latent Entities) If there are implicit references, annotate them with placeholders like (ENT1), (ENT2), etc.
+- (Casting QA special rule) For questions like “Who is played by <descriptor> in <movie>?”:
+  * ENT1 = ROLE/character (answer), ENT2 = PERSON/actor (holder of descriptor)
+  * Enforce chain: descriptor → PERSON (ENT2) → plays → ROLE (ENT1) in MOVIE
+  * Triples to include when supported: (ENT2) plays (ENT1) in "<movie title>"; (ENT2) has_attribute "<descriptor>"
+- (Output Format) Do NOT add numbering or bullets. Output only raw triples.
 
 # Reasoning Path:
 To answer this question, I need to find the country where Adams Township is located. Let me search for information about Adams Township.
@@ -679,6 +741,12 @@ First, I need to identify the composer of New York Counterpoint. Then I can find
 # Triples:
 (ENT1) [SEP] composed [SEP] New York Counterpoint
 (ENT1) [SEP] works in [SEP] a genre
+
+# Reasoning Path:
+The question asks who is played by an acclaimed role model businesswoman in "Example Film". I should identify the actor with that descriptor and link them to the role they play in the movie.
+# Triples:
+(ENT2) [SEP] plays [SEP] (ENT1) [PREP] in "Example Film"
+(ENT2) [SEP] has_attribute [SEP] "acclaimed role model businesswoman"
 
 # Reasoning Path:
 <<target_reasoning_path>>
@@ -693,8 +761,10 @@ Extract triples from the given retrieved document following the guidelines below
 - (Triple Structure) Each triple should follow this format: 'subject [SEP] relation [SEP] object'. Both the subject and object should be noun phrases, while the relation should be a verb or verb phrase, forming a complete sentence.
 - (Prepositional Phrases) In exceptional cases where a prepositional phrase modifies the entire triple, append it to the end: 'subject [SEP] relation [SEP] object [PREP] preposition phrase'.
 - (Pronoun Resolution) Replace any pronouns with the corresponding entities to ensure that each triple is self-contained.
-- (Entity Consistency) Use the exact same string only when two mentions refer to the same concrete real-world entity across different triples. Do not merge different latent placeholders or different entities just because later reasoning compares them or asks whether they are the same.
+- (Entity Consistency) Use the exact same string to represent entities whenever they refer to the same entity across different triples.
 - (Focus on Facts) Only extract factual claims, not opinions or hypothetical statements.
+- (Casting normalization) If a movie passage shows “ROLE (PERSON)” or “ROLE ... (PERSON)”, normalize to a casting triple:
+  PERSON [SEP] plays [SEP] ROLE [PREP] in "<movie title>". Keep any descriptors (e.g., role model businesswoman) on PERSON, not on ROLE, unless the text explicitly states the ROLE has that attribute.
 
 # Document:
 (Title: Adams Township, Pennsylvania) Adams Township is located in Butler County, Pennsylvania. It was established in 1854.
@@ -758,6 +828,13 @@ Given a question, generate a step-by-step Chain-of-Thought reasoning path and ex
 # Output Format:
 1. First, generate the reasoning path
 2. Then, extract triples from the reasoning
+3. Apply the casting QA special rule when applicable:
+   - Pattern: “Who is played by <descriptor> in <movie>?” (or “<배우 설명>이 연기한 인물은?”)
+   - ENT1 = ROLE/character (answer), ENT2 = PERSON/actor (descriptor holder)
+   - Required triples (when supported by reasoning/evidence):
+     * (ENT2) [SEP] plays [SEP] (ENT1) [PREP] in "<movie title>"
+     * (ENT2) [SEP] has_attribute [SEP] "<descriptor>" (use wording from context)
+- (Output Format) Do NOT add numbering or bullets. Output only raw triples.
 
 # Question:
 In which country is Adams Township located?
@@ -797,6 +874,17 @@ Let me start by searching for information about Amalie Schoppe's death location.
 # Triples:
 the ball drop [SEP] started in [SEP] (ENT2) [PREP] on (ENT1)
 Amalie Schoppe [SEP] died in [SEP] (ENT2)
+
+# Question:
+Who is played by an acclaimed role model businesswoman in "Example Film"?
+# Reasoning:
+I should identify the actor described as an acclaimed role model businesswoman, then link that actor to the role they play in "Example Film".
+# Latent Entities:
+(ENT1) [SEP] is [SEP] a role in the movie "Example Film"
+(ENT2) [SEP] is [SEP] an actor
+# Triples:
+(ENT2) [SEP] plays [SEP] (ENT1) [PREP] in "Example Film"
+(ENT2) [SEP] has_attribute [SEP] "acclaimed role model businesswoman"
 
 # Question:
 <<target_question>>

@@ -23,6 +23,8 @@ mkdir -p "${HF_HOME}" "${TRANSFORMERS_CACHE}"
 
 # Transformers 업그레이드 (Qwen2.5 지원) - graphcheck 환경에 설치됨
 pip install --upgrade transformers>=4.37.0 --quiet
+pip install nltk --quiet
+python -c "import nltk; nltk.download('wordnet', quiet=True); nltk.download('omw-1.4', quiet=True); nltk.download('stopwords', quiet=True)"
 
 input_fname="train_sampled"
 dataset="musique"
@@ -64,6 +66,17 @@ python -u compare_graphs.py \
     --cot_retry 3 \
     --retrieval_strategy ${retrieval_strategy} \
     --compare_question_graph \
+    --compare_soft_match \
+    --soft_match_threshold 0.65 \
+    --soft_match_topn_candidates 30 \
+    --soft_match_cache_path ./cache/softmatch_rel_pairs.jsonl \
+    --compact_output \
+    --compare_ensemble_match \
+    --enable_binding_search \
+    --binding_top_k 5 \
+    --binding_beam_size 50 \
+    --binding_cand_per_query 50 \
+    --binding_min_token_jaccard 0.5 \
     $(if [ "$use_searchr1" = true ]; then echo "--use_searchr1"; fi) \
     $(if [ "$nudge_searchr1" = true ]; then echo "--nudge_searchr1"; fi) \
     --multihop_top_k_per_triplet ${multihop_top_k_per_triplet}

@@ -1,0 +1,4 @@
+========== Evaluate infill results (EM/F1) ==========
+MODEL=Qwen/Qwen2.5-7B-Instruct
+OUTPUT_DIR=/data3/seonhoyoo/graphcheck-qa/infilling/output
+Loading model: Qwen/Qwen2.5-7B-Instruct
