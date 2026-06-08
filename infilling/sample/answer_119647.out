@@ -1,0 +1,71 @@
+========== answer.sh Config ==========
+SLURM_JOB_ID=119647
+model_name=Qwen/Qwen2.5-7B-Instruct
+infill_dir=/data3/seonhoyoo/graphcheck-qa/infilling/output/infill
+answer_dir=/data3/seonhoyoo/graphcheck-qa/infilling/output/answer
+datasets=2wikimultihopqa hotpotqa musique
+ent_exist_flag=all
+max_trials=3
+=====================================
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_all.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top10.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top1.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top3.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top5.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_triplet_all.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top10.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top1.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top3.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top5.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_all.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top10.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top1.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top3.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top5.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_triplet_all.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top10.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top1.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top3.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top5.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_fulldoc_all.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top10.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top1.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top3.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top5.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_triplet_all.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_triplet_top10.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_triplet_top1.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_triplet_top3.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_triplet_top5.json
+
+========== Done ==========

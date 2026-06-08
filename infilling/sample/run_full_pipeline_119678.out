@@ -1,0 +1,261 @@
+==============================================
+Full Pipeline: Infill → Answer → Evaluate
+Dataset: all, Model: Qwen/Qwen2.5-7B-Instruct
+==============================================
+
+========== Step 1: Infill ==========
+
+========== Dataset: 2wikimultihopqa ==========
+DATA_FILE=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+OUTPUT_DIR=/data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa
+MODEL_NAME=Qwen/Qwen2.5-7B-Instruct
+
+>>> use_full_doc=0, triplet_selection=all
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top1
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top3
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top5
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top10
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=all
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top1
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top3
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top5
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top10
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> force_doc_only=1 (document만, triplet 미사용)
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+========== Dataset: hotpotqa ==========
+DATA_FILE=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+OUTPUT_DIR=/data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa
+MODEL_NAME=Qwen/Qwen2.5-7B-Instruct
+
+>>> use_full_doc=0, triplet_selection=all
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top1
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top3
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top5
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top10
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=all
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top1
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top3
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top5
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top10
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> force_doc_only=1 (document만, triplet 미사용)
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+========== Dataset: musique ==========
+DATA_FILE=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+OUTPUT_DIR=/data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique
+MODEL_NAME=Qwen/Qwen2.5-7B-Instruct
+
+>>> use_full_doc=0, triplet_selection=all
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top1
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top3
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top5
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top10
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=all
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top1
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top3
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top5
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top10
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> force_doc_only=1 (document만, triplet 미사용)
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+========== All experiments completed ==========
+Infill results: /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/
+
+========== Step 2: Answer ==========
+========== Step 1: Run answer.py on all infill results ==========
+MODEL=Qwen/Qwen2.5-7B-Instruct, ent_exist_flag=all
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_doconly_all.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_all.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top10.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top1.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top3.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top5.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_triplet_all.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top10.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top1.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top3.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/2wikimultihopqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top5.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_doconly_all.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_all.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top10.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top1.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top3.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top5.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_triplet_all.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top10.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top1.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top3.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/hotpotqa/infill_triplets_triplet_only_triplet_only_gold_triplet_top5.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_doconly_all.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_fulldoc_all.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top10.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top1.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top3.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_fulldoc_top5.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_triplet_all.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_triplet_top10.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_triplet_top1.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_triplet_top3.json
+
+>>> /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/musique/infill_triplets_triplet_only_triplet_only_gold_triplet_top5.json
+
+========== Step 2: Aggregate EM/F1 ==========
+
+CSV saved: /data3/seonhoyoo/graphcheck-qa/infilling/output/infill_metrics_summary.csv
+
+====================================================================================================
+Infill Experiment EM/F1 Summary
+====================================================================================================
+
+--- 2wikimultihopqa ---
+  [triplet] all: EM=1.000 F1=1.000  top1: EM=1.000 F1=1.000  top3: EM=1.000 F1=1.000  top5: EM=1.000 F1=1.000  top10: EM=1.000 F1=1.000  
+  [fulldoc] all: EM=1.000 F1=1.000  top1: EM=1.000 F1=1.000  top3: EM=1.000 F1=1.000  top5: EM=1.000 F1=1.000  top10: EM=1.000 F1=1.000  
+  [doconly] EM=1.000 F1=1.000
+
+--- hotpotqa ---
+  [triplet] all: EM=1.000 F1=1.000  top1: EM=1.000 F1=1.000  top3: EM=1.000 F1=1.000  top5: EM=1.000 F1=1.000  top10: EM=1.000 F1=1.000  
+  [fulldoc] all: EM=1.000 F1=1.000  top1: EM=1.000 F1=1.000  top3: EM=1.000 F1=1.000  top5: EM=1.000 F1=1.000  top10: EM=1.000 F1=1.000  
+  [doconly] EM=1.000 F1=1.000
+
+--- musique ---
+  [triplet] all: EM=1.000 F1=1.000  top1: EM=1.000 F1=1.000  top3: EM=1.000 F1=1.000  top5: EM=1.000 F1=1.000  top10: EM=1.000 F1=1.000  
+  [fulldoc] all: EM=1.000 F1=1.000  top1: EM=1.000 F1=1.000  top3: EM=1.000 F1=1.000  top5: EM=1.000 F1=1.000  top10: EM=1.000 F1=1.000  
+  [doconly] EM=1.000 F1=1.000
+====================================================================================================
+
+### Markdown Table ###
+
+| dataset | use_full_doc | triplet | n | EM | F1 |
+|---------|--------------|---------|---|-----|-----|
+| 2wikimultihopqa | X | all | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | X | top1 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | X | top10 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | X | top3 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | X | top5 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | O | all | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | O | top1 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | O | top10 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | O | top3 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | O | top5 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | doconly | doconly | 500 | 1.000 | 1.000 |
+| hotpotqa | X | all | 500 | 1.000 | 1.000 |
+| hotpotqa | X | top1 | 500 | 1.000 | 1.000 |
+| hotpotqa | X | top10 | 500 | 1.000 | 1.000 |
+| hotpotqa | X | top3 | 500 | 1.000 | 1.000 |
+| hotpotqa | X | top5 | 500 | 1.000 | 1.000 |
+| hotpotqa | O | all | 500 | 1.000 | 1.000 |
+| hotpotqa | O | top1 | 500 | 1.000 | 1.000 |
+| hotpotqa | O | top10 | 500 | 1.000 | 1.000 |
+| hotpotqa | O | top3 | 500 | 1.000 | 1.000 |
+| hotpotqa | O | top5 | 500 | 1.000 | 1.000 |
+| hotpotqa | doconly | doconly | 500 | 1.000 | 1.000 |
+| musique | X | all | 1000 | 1.000 | 1.000 |
+| musique | X | top1 | 1000 | 1.000 | 1.000 |
+| musique | X | top10 | 1000 | 1.000 | 1.000 |
+| musique | X | top3 | 1000 | 1.000 | 1.000 |
+| musique | X | top5 | 1000 | 1.000 | 1.000 |
+| musique | O | all | 1000 | 1.000 | 1.000 |
+| musique | O | top1 | 1000 | 1.000 | 1.000 |
+| musique | O | top10 | 1000 | 1.000 | 1.000 |
+| musique | O | top3 | 1000 | 1.000 | 1.000 |
+| musique | O | top5 | 1000 | 1.000 | 1.000 |
+| musique | doconly | doconly | 1000 | 1.000 | 1.000 |
+
+========== Done ==========
+
+========== Pipeline Complete ==========
+Results: /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/ , /data3/seonhoyoo/graphcheck-qa/infilling/output/answer/
+Summary: /data3/seonhoyoo/graphcheck-qa/infilling/output/infill_metrics_summary.csv

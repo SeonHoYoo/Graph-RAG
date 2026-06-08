@@ -1,14 +1,15 @@
 construction_prompt = """
-Decompose each question into triples following the guidelines below:
+Decompose each question into triples following the rules below:
 # Latent Entities:
-- (Identification) Firstly, identify any latent entities (i.e., implicit references not directly mentioned in the question that need to be clarified).
-- (Definition) Define these identified latent entities in triple format, using placeholders like (ENT1), (ENT2), etc.
+- Identify latent entities that must be resolved to answer the question.
+- Define each latent entity as `(ENTk) [SEP] is [SEP] ...`.
+- If the question compares attributes of multiple entities, use separate latent placeholders for each attribute. Do not merge them during decomposition.
 # Triples:
-- (Basic Information Unit) Decompose the question into triples, ensuring you reach the most fundamental verifiable information while preserving the original meaning. Be careful not to lose important information during decomposition.
-- (Triple Structure) Each triple should follow this format: ‘subject [SEP] relation [SEP] object’. Both the subject and object should be noun phrases, while the relation should be a verb or verb phrase, forming a complete sentence.
-- (Prepositional Phrases) In exceptional cases where a prepositional phrase modifies the entire triple (rather than just the subject or object) and splitting it into another triple would alter the meaning of the question, do not divide it. Instead, append it to the end of the triple: ‘subject [SEP] relation [SEP] object [PREP] preposition phrase’.
-- (Pronoun Resolution) Replace any pronouns with the corresponding entities to ensure that each triple is self-contained and independent of external context.
-- (Entity Consistency) Use the exact same string to represent entities (i.e., the ‘subject’ or ‘object’) whenever they refer to the same entity across different triples.
+- Output the minimal set of verifiable triples needed to answer the question.
+- Each triple must be exactly: `subject [SEP] relation [SEP] object`.
+- Use `[PREP]` only when the prepositional phrase cannot be separated without changing the meaning.
+- Resolve pronouns to explicit entities.
+- Reuse the same string only for the same real-world entity. Do not merge different entities or latent placeholders just because they are compared.
 
 # Question:
 In which country is Adams Township located?
@@ -40,7 +41,7 @@ When did the ball drop start in the state where Amalie Schoppe died?
 (ENT1) [SEP] is [SEP] a date
 (ENT2) [SEP] is [SEP] a state
 # Triples:
-the ball drop [SEP] started in [SEP] (ENT2) [PREP] on (ENT1)
+The ball drop [SEP] started in [SEP] (ENT2) [PREP] on (ENT1)
 Amalie Schoppe [SEP] died in [SEP] (ENT2)
 
 # Question:
@@ -108,9 +109,11 @@ Bush [SEP] said [SEP] the war on terror begins with (ENT2)
 
 
 latent_detection_prompt_musique = """
-Identify any latent entities in the given question, following the guidelines below:
-- (Identification) Firstly, identify any latent entities (i.e., implicit references not directly mentioned in the question that need to be clarified).
-- (Definition) Define these identified latent entities in triple format, using placeholders like (ENT1), (ENT2), etc.
+Identify latent entities in the question using the rules below:
+- Output only latent-entity definitions.
+- Each line must be exactly: `(ENTk) [SEP] is [SEP] ...`.
+- If there are no latent entities, output nothing.
+- If the question compares attributes of multiple entities, use separate latent placeholders for each attribute. Do not merge them during decomposition.
 
 # Question:
 In which country is Adams Township located?
@@ -180,9 +183,11 @@ What are the biggest terrorist attacks by the group with which Bush said the war
 
 
 latent_detection_prompt_hotpotqa = """
-Identify any latent entities in the given question, following the guidelines below:
-- (Identification) Firstly, identify any latent entities (i.e., implicit references not directly mentioned in the question that need to be clarified).
-- (Definition) Define these identified latent entities in triple format, using placeholders like (ENT1), (ENT2), etc.
+Identify latent entities in the question using the rules below:
+- Output only latent-entity definitions.
+- Each line must be exactly: `(ENTk) [SEP] is [SEP] ...`.
+- If there are no latent entities, output nothing.
+- If the question compares attributes of multiple entities, use separate latent placeholders for each attribute. Do not merge them during decomposition.
 
 # Question:
 What type of music do Freddie Hart and Earl Poole Ball both write?
@@ -247,9 +252,11 @@ Bridge Plaza in Brooklyn is bordered on the west by the bridge that has a length
 
 
 latent_detection_prompt_2wikimultihopqa = """
-Identify any latent entities in the given question, following the guidelines below:
-- (Identification) Firstly, identify any latent entities (i.e., implicit references not directly mentioned in the question that need to be clarified).
-- (Definition) Define these identified latent entities in triple format, using placeholders like (ENT1), (ENT2), etc.
+Identify latent entities in the question using the rules below:
+- Output only latent-entity definitions.
+- Each line must be exactly: `(ENTk) [SEP] is [SEP] ...`.
+- If there are no latent entities, output nothing.
+- If the question compares attributes of multiple entities, use separate latent placeholders for each attribute. Do not merge them during decomposition.
 
 # Question:
 Where did Margaret Flamsteed's husband die?
@@ -323,13 +330,13 @@ Do both films A Chorus Line (Film) and D\u00e9d\u00e9 (1989 Film) have the direc
 
 
 triplet_extraction_prompt_musique =  """
-Decompose each question into triples following the guidelines below:
-- (Basic Information Unit) Decompose the question into triples, ensuring you reach the most fundamental verifiable information while preserving the original meaning. Be careful not to lose important information during decomposition.
-- (Triple Structure) Each triple should follow this format: ‘subject [SEP] relation [SEP] object’. Both the subject and object should be noun phrases, while the relation should be a verb or verb phrase, forming a complete sentence.
-- (Prepositional Phrases) In exceptional cases where a prepositional phrase modifies the entire triple (rather than just the subject or object) and splitting it into another triple would alter the meaning of the question, do not divide it. Instead, append it to the end of the triple: ‘subject [SEP] relation [SEP] object [PREP] preposition phrase’.
-- (Pronoun Resolution) Replace any pronouns with the corresponding entities to ensure that each triple is self-contained and independent of external context.
-- (Entity Consistency) Use the exact same string to represent entities (i.e., the ‘subject’ or ‘object’) whenever they refer to the same entity across different triples.
-- (Latent Entities) Any latent entities (i.e., implicit references not directly mentioned in the question) are annotated in triple format with placeholders like (ENT1), (ENT2), etc. Use those placeholders consistently throughout the triples.
+Decompose each question into triples using the rules below:
+- Output the minimal set of verifiable triples needed to answer the question.
+- Each triple must be exactly: `subject [SEP] relation [SEP] object`.
+- Use `[PREP]` only when the prepositional phrase cannot be separated without changing the meaning.
+- Resolve pronouns to explicit entities.
+- Reuse the same string only for the same real-world entity. Do not merge different entities or latent placeholders just because they are compared.
+- Use the provided latent placeholders exactly as written.
 
 # Question:
 In which country is Adams Township located?
@@ -432,13 +439,13 @@ Bush [SEP] said [SEP] the war on terror begins with (ENT2)
 
 
 triplet_extraction_prompt_hotpotqa =  """
-Decompose each question into triples following the guidelines below:
-- (Basic Information Unit) Decompose the question into triples, ensuring you reach the most fundamental verifiable information while preserving the original meaning. Be careful not to lose important information during decomposition.
-- (Triple Structure) Each triple should follow this format: ‘subject [SEP] relation [SEP] object’. Both the subject and object should be noun phrases, while the relation should be a verb or verb phrase, forming a complete sentence.
-- (Prepositional Phrases) In exceptional cases where a prepositional phrase modifies the entire triple (rather than just the subject or object) and splitting it into another triple would alter the meaning of the question, do not divide it. Instead, append it to the end of the triple: ‘subject [SEP] relation [SEP] object [PREP] preposition phrase’.
-- (Pronoun Resolution) Replace any pronouns with the corresponding entities to ensure that each triple is self-contained and independent of external context.
-- (Entity Consistency) Use the exact same string to represent entities (i.e., the ‘subject’ or ‘object’) whenever they refer to the same entity across different triples.
-- (Latent Entities) Any latent entities (i.e., implicit references not directly mentioned in the question) are annotated in triple format with placeholders like (ENT1), (ENT2), etc. Use those placeholders consistently throughout the triples.
+Decompose each question into triples using the rules below:
+- Output the minimal set of verifiable triples needed to answer the question.
+- Each triple must be exactly: `subject [SEP] relation [SEP] object`.
+- Use `[PREP]` only when the prepositional phrase cannot be separated without changing the meaning.
+- Resolve pronouns to explicit entities.
+- Reuse the same string only for the same real-world entity. Do not merge different entities or latent placeholders just because they are compared.
+- Use the provided latent placeholders exactly as written.
 
 # Question:
 What type of music do Freddie Hart and Earl Poole Ball both write?
@@ -538,13 +545,13 @@ Bridge Plaza in Brooklyn [SEP] is bordered on the west by [SEP] (ENT2)
 
 
 triplet_extraction_prompt_2wikimultihopqa =  """
-Decompose each question into triples following the guidelines below:
-- (Basic Information Unit) Decompose the question into triples, ensuring you reach the most fundamental verifiable information while preserving the original meaning. Be careful not to lose important information during decomposition.
-- (Triple Structure) Each triple should follow this format: ‘subject [SEP] relation [SEP] object’. Both the subject and object should be noun phrases, while the relation should be a verb or verb phrase, forming a complete sentence.
-- (Prepositional Phrases) In exceptional cases where a prepositional phrase modifies the entire triple (rather than just the subject or object) and splitting it into another triple would alter the meaning of the question, do not divide it. Instead, append it to the end of the triple: ‘subject [SEP] relation [SEP] object [PREP] preposition phrase’.
-- (Pronoun Resolution) Replace any pronouns with the corresponding entities to ensure that each triple is self-contained and independent of external context.
-- (Entity Consistency) Use the exact same string to represent entities (i.e., the ‘subject’ or ‘object’) whenever they refer to the same entity across different triples.
-- (Latent Entities) Any latent entities (i.e., implicit references not directly mentioned in the question) are annotated in triple format with placeholders like (ENT1), (ENT2), etc. Use those placeholders consistently throughout the triples.
+Decompose each question into triples using the rules below:
+- Output the minimal set of verifiable triples needed to answer the question.
+- Each triple must be exactly: `subject [SEP] relation [SEP] object`.
+- Use `[PREP]` only when the prepositional phrase cannot be separated without changing the meaning.
+- Resolve pronouns to explicit entities.
+- Reuse the same string only for the same real-world entity. Do not merge different entities or latent placeholders just because they are compared.
+- Use the provided latent placeholders exactly as written.
 
 # Question:
 Where did Margaret Flamsteed's husband die?
@@ -659,7 +666,7 @@ Extract triples from the given Chain-of-Thought reasoning path following the gui
 - (Triple Structure) Each triple should follow this format: 'subject [SEP] relation [SEP] object'. Both the subject and object should be noun phrases, while the relation should be a verb or verb phrase, forming a complete sentence.
 - (Prepositional Phrases) In exceptional cases where a prepositional phrase modifies the entire triple, append it to the end: 'subject [SEP] relation [SEP] object [PREP] preposition phrase'.
 - (Pronoun Resolution) Replace any pronouns with the corresponding entities to ensure that each triple is self-contained.
-- (Entity Consistency) Use the exact same string to represent entities whenever they refer to the same entity across different triples.
+- (Entity Consistency) Use the exact same string only when two mentions refer to the same concrete real-world entity across different triples. Do not merge different latent placeholders or different entities just because the reasoning later compares them or asks whether they are the same.
 - (Latent Entities) If there are implicit references, annotate them with placeholders like (ENT1), (ENT2), etc.
 
 # Reasoning Path:
@@ -686,7 +693,7 @@ Extract triples from the given retrieved document following the guidelines below
 - (Triple Structure) Each triple should follow this format: 'subject [SEP] relation [SEP] object'. Both the subject and object should be noun phrases, while the relation should be a verb or verb phrase, forming a complete sentence.
 - (Prepositional Phrases) In exceptional cases where a prepositional phrase modifies the entire triple, append it to the end: 'subject [SEP] relation [SEP] object [PREP] preposition phrase'.
 - (Pronoun Resolution) Replace any pronouns with the corresponding entities to ensure that each triple is self-contained.
-- (Entity Consistency) Use the exact same string to represent entities whenever they refer to the same entity across different triples.
+- (Entity Consistency) Use the exact same string only when two mentions refer to the same concrete real-world entity across different triples. Do not merge different latent placeholders or different entities just because later reasoning compares them or asks whether they are the same.
 - (Focus on Facts) Only extract factual claims, not opinions or hypothetical statements.
 
 # Document:

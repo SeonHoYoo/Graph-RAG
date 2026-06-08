@@ -1,0 +1,7 @@
+========== Infill Experiments (10 configs) ==========
+DATA_FILE=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+OUTPUT_DIR=/data3/seonhoyoo/graphcheck-qa/infilling/output
+MODEL_NAME=Qwen/Qwen2.5-7B-Instruct
+===================================================
+
+>>> Running: use_full_doc=0, triplet_selection=all
