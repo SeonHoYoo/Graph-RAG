@@ -1,0 +1,70 @@
+==============================================
+Full Pipeline: Single-Process Triplet → Infill → Answer
+Dataset: all, Model: Qwen/Qwen2.5-7B-Instruct
+==============================================
+
+========== Aggregate EM/F1 by strategy ==========
+
+CSV saved: /data3/seonhoyoo/graphcheck-qa/infilling/output/infill_metrics_summary.csv
+
+====================================================================================================
+Infill Experiment EM/F1 Summary
+====================================================================================================
+
+--- 2wikimultihopqa ---
+  [triplet] all: EM=1.000 F1=1.000  top1: EM=1.000 F1=1.000  top3: EM=1.000 F1=1.000  top5: EM=1.000 F1=1.000  top10: EM=1.000 F1=1.000  
+  [fulldoc] all: EM=1.000 F1=1.000  top1: EM=1.000 F1=1.000  top3: EM=1.000 F1=1.000  top5: EM=1.000 F1=1.000  top10: EM=1.000 F1=1.000  
+  [doconly] EM=1.000 F1=1.000
+
+--- hotpotqa ---
+  [triplet] all: EM=1.000 F1=1.000  top1: EM=1.000 F1=1.000  top3: EM=1.000 F1=1.000  top5: EM=1.000 F1=1.000  top10: EM=1.000 F1=1.000  
+  [fulldoc] all: EM=1.000 F1=1.000  top1: EM=1.000 F1=1.000  top3: EM=1.000 F1=1.000  top5: EM=1.000 F1=1.000  top10: EM=1.000 F1=1.000  
+  [doconly] EM=1.000 F1=1.000
+
+--- musique ---
+  [triplet] all: EM=1.000 F1=1.000  top1: EM=1.000 F1=1.000  top3: EM=1.000 F1=1.000  top5: EM=1.000 F1=1.000  top10: EM=1.000 F1=1.000  
+  [fulldoc] all: EM=1.000 F1=1.000  top1: EM=1.000 F1=1.000  top3: EM=1.000 F1=1.000  top5: EM=1.000 F1=1.000  top10: EM=1.000 F1=1.000  
+  [doconly] EM=1.000 F1=1.000
+====================================================================================================
+
+### Markdown Table ###
+
+| dataset | use_full_doc | triplet | n | EM | F1 |
+|---------|--------------|---------|---|-----|-----|
+| 2wikimultihopqa | X | all | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | X | top1 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | X | top10 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | X | top3 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | X | top5 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | O | all | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | O | top1 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | O | top10 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | O | top3 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | O | top5 | 500 | 1.000 | 1.000 |
+| 2wikimultihopqa | doconly | doconly | 500 | 1.000 | 1.000 |
+| hotpotqa | X | all | 500 | 1.000 | 1.000 |
+| hotpotqa | X | top1 | 500 | 1.000 | 1.000 |
+| hotpotqa | X | top10 | 500 | 1.000 | 1.000 |
+| hotpotqa | X | top3 | 500 | 1.000 | 1.000 |
+| hotpotqa | X | top5 | 500 | 1.000 | 1.000 |
+| hotpotqa | O | all | 500 | 1.000 | 1.000 |
+| hotpotqa | O | top1 | 500 | 1.000 | 1.000 |
+| hotpotqa | O | top10 | 500 | 1.000 | 1.000 |
+| hotpotqa | O | top3 | 500 | 1.000 | 1.000 |
+| hotpotqa | O | top5 | 500 | 1.000 | 1.000 |
+| hotpotqa | doconly | doconly | 500 | 1.000 | 1.000 |
+| musique | X | all | 1000 | 1.000 | 1.000 |
+| musique | X | top1 | 1000 | 1.000 | 1.000 |
+| musique | X | top10 | 1000 | 1.000 | 1.000 |
+| musique | X | top3 | 1000 | 1.000 | 1.000 |
+| musique | X | top5 | 1000 | 1.000 | 1.000 |
+| musique | O | all | 1000 | 1.000 | 1.000 |
+| musique | O | top1 | 1000 | 1.000 | 1.000 |
+| musique | O | top10 | 1000 | 1.000 | 1.000 |
+| musique | O | top3 | 1000 | 1.000 | 1.000 |
+| musique | O | top5 | 1000 | 1.000 | 1.000 |
+| musique | doconly | doconly | 1000 | 1.000 | 1.000 |
+
+========== Pipeline Complete ==========
+Results: /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/Qwen2.5-7B-Instruct/ , /data3/seonhoyoo/graphcheck-qa/infilling/output/answer/Qwen2.5-7B-Instruct/
+Summary CSV: /data3/seonhoyoo/graphcheck-qa/infilling/output/infill_metrics_summary.csv

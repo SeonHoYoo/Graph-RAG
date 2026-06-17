@@ -1,0 +1,6 @@
+==============================================
+Full Pipeline: Single-Process Triplet → Infill → Answer
+Dataset: all, Model: Qwen/Qwen2.5-7B-Instruct
+Setting: open-book (no gold), triplet top-k=3,5,10, baseline top-k=3,5,10
+Output tag: openbook_nogold_tk3510_job121136
+==============================================

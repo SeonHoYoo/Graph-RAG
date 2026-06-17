@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/data3/hyeseojeon/miniconda3/bin/python -c \"from peft import LoraConfig, TaskType, get_peft_model; print\\('peft OK'\\)\")",
+      "Bash(xargs cat)",
+      "Bash(squeue --job 157530)",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 -)",
+      "Bash(grep -E \"\\\\.py$\")",
+      "Bash(sed -i 's/\\\\${USE_BF16:-0}/${USE_BF16:-1}/' /home/hyeseojeon/data/graph/scripts/finetune/t5-base.sh)",
+      "Bash(sed -i 's/\\\\${USE_FP16:-1}/${USE_FP16:-0}/' /home/hyeseojeon/data/graph/scripts/finetune/t5-base.sh)",
+      "Bash(grep -v \"^$\")",
+      "Bash(/data3/hyeseojeon/miniconda3/bin/python3 -c ' *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d['base_model_name_or_path']\\)\")",
+      "Bash(squeue -u hyeseojeon)",
+      "Bash(squeue --me)",
+      "Bash(/data3/hyeseojeon/.conda/envs/sllm3/bin/python -m vllm.entrypoints.openai.api_server --help)",
+      "Read(//home/hyeseojeon/data/graph/logs/latency/vllm/**)",
+      "Read(//data3/hyeseojeon/graph/logs/latency/vllm/**)",
+      "Bash(python3 -c \"import rich\")",
+      "Bash(python3)",
+      "Bash(chmod +x /home/hyeseojeon/data/graph/scripts/latency/online/run_online_latency.sh)",
+      "Bash(ssh n02 *)"
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "dataset": "hotpotqa",
+    "index": 111,
+    "question": "The a German chemist who received the Nobel Prize in Chemistry in 1918 reported the smell of what war gas allegedly developed by the French chemist Eug\u00e8ne Turpin?",
+    "answer": "Turpenite",
+    "predicted_answer": "Fritz Haber",
+    "gold_id_list": [
+      "Turpinite",
+      "Fritz Haber"
+    ],
+    "score": 0.0
+  },
+  {
+    "dataset": "hotpotqa",
+    "index": 183,
+    "question": "Who was born first out of Vladimir Mayakovsky and Czes\u0142aw Mi\u0142osz?",
+    "answer": "Vladimir Vladimirovich Mayakovsky",
+    "predicted_answer": "Vladimir Mayakovsky",
+    "gold_id_list": [
+      "Czes\u0142aw Mi\u0142osz",
+      "Vladimir Mayakovsky"
+    ],
+    "score": 0.0
+  },
+  {
+    "dataset": "2wiki",
+    "index": 12,
+    "question": "When is R\u00fah\u00edyyih Kh\u00e1num's husband's birthday?",
+    "answer": "1 March 1897",
+    "predicted_answer": "March 23, 1897",
+    "gold_id_list": [
+      "R\u00fah\u00edyyih Kh\u00e1num",
+      "Shoghi Effendi"
+    ],
+    "score": 0.0
+  },
+  {
+    "dataset": "2wiki",
+    "index": 402,
+    "question": "Which film has the director born first, Losing Ground (1982 Film) or Bagdad Cafe?",
+    "answer": "Bagdad Cafe",
+    "predicted_answer": "Losing Ground",
+    "gold_id_list": [
+      "Percy Adlon",
+      "Kathleen Collins",
+      "Losing Ground (1982 film)",
+      "Bagdad Cafe"
+    ],
+    "score": 0.0
+  }
+]

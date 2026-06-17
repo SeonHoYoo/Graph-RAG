@@ -4,6 +4,7 @@ import logging
 import os
 import time
 import torch
+import re
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from typing import *
 from tqdm import tqdm
@@ -22,6 +23,7 @@ class ConstructModel():
         dataset_name: str,
         api_key: Optional[Any] = None, 
         batch_size: Optional[int] = 1,
+        construct_model_client: Optional[Any] = None,
     ):  
         
         _model_name_lower = construct_model_name.lower()
@@ -182,6 +184,7 @@ class ConstructModel():
         triplet_prompt = triplet_prompt.replace("<<target_latent_entities>>", latent_entities_str)
         triplet_answer = self.construct_model.generate(triplet_prompt)
         triples = self.parse_triplets(triplet_answer, def_triples)
+        triples = self.normalize_casting_triples(sample.get("question", ""), triples)
         
         sample.update({
             "definition_triples": def_triples,
@@ -317,6 +320,60 @@ class ConstructModel():
         triples = self.parse_triplets(answer, def_triples)
         
         return def_triples, triples
+
+
+    def normalize_casting_triples(
+        self,
+        question: str,
+        triples: List[str]
+    ) -> List[str]:
+        if not question:
+            return triples
+
+        q = question.lower()
+        if ("played by" not in q) and ("연기" not in q):
+            return triples
+
+        def _normalize_triple(triple: str) -> str:
+            if "[SEP]" not in triple:
+                return triple
+
+            parts = triple.split(" [SEP] ")
+            if len(parts) < 3:
+                return triple
+
+            subject = parts[0].strip()
+            relation = parts[1].strip()
+            rest = " [SEP] ".join(parts[2:]).strip()
+            obj = rest
+            prep = ""
+            if " [PREP] " in rest:
+                obj, prep = rest.split(" [PREP] ", 1)
+                obj = obj.strip()
+                prep = prep.strip()
+
+            if re.search(r"\\b(is\\s+played\\s+by|played\\s+by|portrayed\\s+by)\\b", relation, re.I):
+                new_triple = f"{obj} [SEP] plays [SEP] {subject}"
+                if prep:
+                    new_triple += f" [PREP] {prep}"
+                return new_triple
+
+            if re.search(r"\\bplays?\\b", relation, re.I):
+                if subject == "(ENT1)" and obj == "(ENT2)":
+                    new_triple = "(ENT2) [SEP] plays [SEP] (ENT1)"
+                    if prep:
+                        new_triple += f" [PREP] {prep}"
+                    return new_triple
+
+            if relation == "has_attribute" and subject == "(ENT1)":
+                new_triple = f"(ENT2) [SEP] has_attribute [SEP] {obj}"
+                if prep:
+                    new_triple += f" [PREP] {prep}"
+                return new_triple
+
+            return triple
+
+        return [_normalize_triple(t) for t in triples]
     
     
     def extract_triplets_from_think_search(

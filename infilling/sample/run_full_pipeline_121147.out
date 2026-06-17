@@ -1,0 +1,16 @@
+==============================================
+Full Pipeline: Single-Process Triplet → Infill → Answer
+Dataset: musique, Model: Qwen/Qwen2.5-7B-Instruct
+Setting: open-book (no gold), triplet top-k=5,10, baseline top-k=5,10
+Output tag: openbook_nogold_tk510_job121147
+==============================================
+
+========== Aggregate Answer EM/F1 by strategy/hop ==========
+Answer root : /data3/seonhoyoo/graphcheck-qa/infilling/output/answer/Qwen2.5-7B-Instruct__openbook_nogold_tk510_job121147
+Files used  : 2 (skipped: 2)
+CSV saved   : /data3/seonhoyoo/graphcheck-qa/infilling/output/answer_em_f1_by_hop_Qwen2.5-7B-Instruct__openbook_nogold_tk510_job121147.csv
+MD saved    : /data3/seonhoyoo/graphcheck-qa/infilling/output/answer_em_f1_by_hop_Qwen2.5-7B-Instruct__openbook_nogold_tk510_job121147.md
+
+========== Pipeline Complete ==========
+Results: /data3/seonhoyoo/graphcheck-qa/infilling/output/infill/Qwen2.5-7B-Instruct__openbook_nogold_tk510_job121147/ , /data3/seonhoyoo/graphcheck-qa/infilling/output/answer/Qwen2.5-7B-Instruct__openbook_nogold_tk510_job121147/
+Answer Summary CSV: /data3/seonhoyoo/graphcheck-qa/infilling/output/answer_em_f1_by_hop_Qwen2.5-7B-Instruct__openbook_nogold_tk510_job121147.csv

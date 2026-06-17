@@ -1,0 +1,11 @@
+========== baseline.sh Config ==========
+SLURM_JOB_ID=119123
+model_name=gpt-4o-mini
+data_file=/home/hyeseojeon/data/Graph-RAG/results/graph/2wiki_triplets_train_sampled.json
+output_dir=/home/hyeseojeon/data/Graph-RAG/results/sample
+context_strategy=doc
+use_gold_graph=1
+use_gold_doc=1
+max_trials=5
+=======================================
+Command: python -u scripts/baseline.py --model_name gpt-4o-mini --data_file /home/hyeseojeon/data/Graph-RAG/results/graph/2wiki_triplets_train_sampled.json --output_dir /home/hyeseojeon/data/Graph-RAG/results/sample --context_strategy doc --use_gold_graph 1 --use_gold_doc 1 --max_trials 5

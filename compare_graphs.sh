@@ -24,6 +24,8 @@ mkdir -p "${HF_HOME}" "${TRANSFORMERS_CACHE}"
 
 # Transformers 업그레이드 (Qwen2.5 지원) - graphcheck 환경에 설치됨
 pip install --upgrade transformers>=4.37.0 --quiet
+pip install nltk --quiet
+python -c "import nltk; nltk.download('wordnet', quiet=True); nltk.download('omw-1.4', quiet=True); nltk.download('stopwords', quiet=True)"
 
 input_fname="train_sampled"
 dataset="hotpotqa"   # musique | hotpotqa | 2wikimultihopqa

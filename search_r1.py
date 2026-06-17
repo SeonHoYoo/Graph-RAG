@@ -5,7 +5,7 @@ import random
 import numpy as np
 import requests
 import re
-from typing import Optional, Dict, Any
+from typing import Callable, Optional, Dict, Any
 
 
 def set_seed(seed=42):
@@ -94,6 +94,8 @@ class SearchR1Inference:
             device_map="auto",
             attn_implementation="eager"
         )
+        if getattr(self.model, "generation_config", None) is not None:
+            self.model.generation_config.max_length = None
 
         # Initialize stopping criteria
         target_sequences = ["</search>", " </search>", "</search>\n",
@@ -253,6 +255,7 @@ If you find no further external knowledge needed, you can directly provide the a
                 input_ids,
                 attention_mask=attention_mask,
                 max_new_tokens=self.max_new_tokens,
+                max_length=None,
                 stopping_criteria=self.stopping_criteria,
                 pad_token_id=self.tokenizer.eos_token_id,
                 do_sample=True,
@@ -407,6 +410,7 @@ If you find no further external knowledge needed, you can directly provide the a
                 input_ids,
                 attention_mask=attention_mask,
                 max_new_tokens=self.max_new_tokens,
+                max_length=None,
                 stopping_criteria=self.stopping_criteria,
                 pad_token_id=self.tokenizer.eos_token_id,
                 do_sample=True,
@@ -503,6 +507,411 @@ If you find no further external knowledge needed, you can directly provide the a
             question_latency_sec=question_latency,
             initial_thinking=thinking,
         )
+
+    def infer_with_graph_hint(self, question: str, graph_hint: str, verbose: bool = False) -> Dict[str, Any]:
+        """
+        Perform SearchR1 inference with a filled question graph as an answer hint.
+
+        The graph is treated as a hint, not a replacement for retrieval.  SearchR1
+        can still issue <search> queries and should answer inside <answer> tags.
+        """
+        question = question.strip()
+        if question and question[-1] != '?':
+            question += '?'
+
+        graph_hint = (graph_hint or "").strip() or "(empty)"
+        prompt = f"""Answer the given question. \
+You must conduct reasoning inside <think> and </think> first every time you get new information. \
+After reasoning, if you find you lack some knowledge, you can call a search engine by <search> query </search> and it will return the top searched results between <information> and </information>. \
+You can search as many times as your want. \
+You are also given a filled question graph hint. Use it as a guide for the relationships to verify, but prefer retrieved evidence if the hint is incomplete or inconsistent. \
+If you find no further external knowledge needed, you can directly provide the answer inside <answer> and </answer>, without detailed illustrations. For example, <answer> Beijing </answer>.
+
+Filled question graph hint:
+{graph_hint}
+
+Question: {question}\n"""
+
+        if self.tokenizer.chat_template:
+            prompt = self.tokenizer.apply_chat_template(
+                [{"role": "user", "content": prompt}],
+                add_generation_prompt=True,
+                tokenize=False
+            )
+
+        if verbose:
+            print('\n\n################# [Start Reasoning + Searching with Graph Hint] ##################\n\n')
+            print(prompt)
+
+        full_response = ""
+        cnt = 0
+        retrieval_turns = []
+        total_search_results = []
+        last_search_results_list = []
+
+        while cnt < self.max_turns:
+            input_ids = self.tokenizer.encode(prompt, return_tensors='pt').to(self.device)
+            attention_mask = torch.ones_like(input_ids)
+
+            outputs = self.model.generate(
+                input_ids,
+                attention_mask=attention_mask,
+                max_new_tokens=self.max_new_tokens,
+                max_length=None,
+                stopping_criteria=self.stopping_criteria,
+                pad_token_id=self.tokenizer.eos_token_id,
+                do_sample=True,
+                temperature=self.temperature
+            )
+
+            if outputs[0][-1].item() in self.curr_eos:
+                generated_tokens = outputs[0][input_ids.shape[1]:]
+                output_text = self.tokenizer.decode(generated_tokens, skip_special_tokens=True)
+                full_response += output_text
+                if verbose:
+                    print(output_text)
+                break
+
+            generated_tokens = outputs[0][input_ids.shape[1]:]
+            output_text = self.tokenizer.decode(generated_tokens, skip_special_tokens=True)
+
+            tmp_query = self._get_query(self.tokenizer.decode(outputs[0], skip_special_tokens=True))
+            if tmp_query:
+                last_search_results_list = self._search(tmp_query)
+                for res in last_search_results_list:
+                    if res not in total_search_results:
+                        total_search_results.append(res)
+
+                turn_info = {
+                    "turn": cnt,
+                    "query": tmp_query,
+                    "retrieved_docs": [],
+                }
+                for result in last_search_results_list:
+                    if result.startswith("(Title: "):
+                        title_end = result.find(")")
+                        if title_end != -1:
+                            turn_info["retrieved_docs"].append(result[8:title_end])
+                retrieval_turns.append(turn_info)
+
+                search_results = "\n".join([f"Doc {idx+1}{result}"
+                                          for idx, result in enumerate(last_search_results_list)])
+            else:
+                search_results = ''
+
+            search_text = self.curr_search_template.format(
+                output_text=output_text,
+                search_results=search_results
+            )
+            prompt += search_text
+            full_response += search_text
+            cnt += 1
+
+            if verbose:
+                print(search_text)
+
+        predicted_answer = self._extract_answer(full_response)
+        reasoning_path = self._extract_reasoning(full_response)
+
+        return {
+            "full_response": full_response,
+            "predicted_answer": predicted_answer,
+            "reasoning_path": reasoning_path,
+            "num_turns": cnt,
+            "retrieval_turns": retrieval_turns,
+            "total_search_results": total_search_results,
+            "last_search_results_list": last_search_results_list
+        }
+
+    def infer_with_subgoal(
+        self,
+        question: str,
+        current_graph_hint: str,
+        target_triple: str,
+        verbose: bool = False,
+    ) -> Dict[str, Any]:
+        """
+        Perform SearchR1 inference guided by one unresolved query-graph triple.
+
+        This is used by the Q-guided online Veri-Graph path: the question graph
+        chooses the current reasoning subgoal, and SearchR1 searches for
+        evidence that can fill the UNKNOWN slot(s) in that selected triple.
+        """
+        question = question.strip()
+        if question and question[-1] != '?':
+            question += '?'
+
+        current_graph_hint = (current_graph_hint or "").strip() or "(empty)"
+        target_triple = (target_triple or "").strip() or "(none)"
+        prompt = f"""Answer the given question. \
+You must conduct reasoning inside <think> and </think> first every time you get new information. \
+After reasoning, if you find you lack some knowledge, you can call a search engine by <search> query </search> and it will return the top searched results between <information> and </information>. \
+You can search as many times as your want. \
+You are also given the current question graph and one selected unresolved query triple. Treat the selected triple as the current reasoning subgoal: focus your thinking and search query on finding evidence that can fill the UNKNOWN placeholder(s) in that triple. \
+If you find no further external knowledge needed, you can directly provide the answer inside <answer> and </answer>, without detailed illustrations. For example, <answer> Beijing </answer>.
+
+Current question graph state:
+{current_graph_hint}
+
+Selected unresolved query triple:
+{target_triple}
+
+Question: {question}\n"""
+
+        if self.tokenizer.chat_template:
+            prompt = self.tokenizer.apply_chat_template(
+                [{"role": "user", "content": prompt}],
+                add_generation_prompt=True,
+                tokenize=False
+            )
+
+        if verbose:
+            print('\n\n################# [Start Q-Graph Subgoal Reasoning + Searching] ##################\n\n')
+            print(prompt)
+
+        full_response = ""
+        cnt = 0
+        retrieval_turns = []
+        total_search_results = []
+        last_search_results_list = []
+
+        while cnt < self.max_turns:
+            input_ids = self.tokenizer.encode(prompt, return_tensors='pt').to(self.device)
+            attention_mask = torch.ones_like(input_ids)
+
+            outputs = self.model.generate(
+                input_ids,
+                attention_mask=attention_mask,
+                max_new_tokens=self.max_new_tokens,
+                max_length=None,
+                stopping_criteria=self.stopping_criteria,
+                pad_token_id=self.tokenizer.eos_token_id,
+                do_sample=True,
+                temperature=self.temperature
+            )
+
+            if outputs[0][-1].item() in self.curr_eos:
+                generated_tokens = outputs[0][input_ids.shape[1]:]
+                output_text = self.tokenizer.decode(generated_tokens, skip_special_tokens=True)
+                full_response += output_text
+                if verbose:
+                    print(output_text)
+                break
+
+            generated_tokens = outputs[0][input_ids.shape[1]:]
+            output_text = self.tokenizer.decode(generated_tokens, skip_special_tokens=True)
+
+            tmp_query = self._get_query(self.tokenizer.decode(outputs[0], skip_special_tokens=True))
+            if tmp_query:
+                last_search_results_list = self._search(tmp_query)
+                for res in last_search_results_list:
+                    if res not in total_search_results:
+                        total_search_results.append(res)
+
+                turn_info = {
+                    "turn": cnt,
+                    "query": tmp_query,
+                    "retrieved_docs": [],
+                    "target_triple": target_triple,
+                }
+                for result in last_search_results_list:
+                    if result.startswith("(Title: "):
+                        title_end = result.find(")")
+                        if title_end != -1:
+                            turn_info["retrieved_docs"].append(result[8:title_end])
+                retrieval_turns.append(turn_info)
+
+                search_results = "\n".join([f"Doc {idx+1}{result}"
+                                          for idx, result in enumerate(last_search_results_list)])
+            else:
+                search_results = ''
+
+            search_text = self.curr_search_template.format(
+                output_text=output_text,
+                search_results=search_results
+            )
+            prompt += search_text
+            full_response += search_text
+            cnt += 1
+
+            if verbose:
+                print(search_text)
+
+        predicted_answer = self._extract_answer(full_response)
+        reasoning_path = self._extract_reasoning(full_response)
+
+        return {
+            "full_response": full_response,
+            "predicted_answer": predicted_answer,
+            "reasoning_path": reasoning_path,
+            "num_turns": cnt,
+            "retrieval_turns": retrieval_turns,
+            "total_search_results": total_search_results,
+            "last_search_results_list": last_search_results_list,
+            "target_triple": target_triple,
+        }
+
+    def infer_with_observer(
+        self,
+        question: str,
+        on_turn: Optional[Callable[[Dict[str, Any]], Dict[str, Any]]] = None,
+        verbose: bool = False,
+        max_turns_override: Optional[int] = None,
+    ) -> Dict[str, Any]:
+        """
+        Perform ordinary SearchR1 inference while exposing each search turn.
+
+        Unlike infer_with_subgoal, the prompt contains only the original
+        question.  The optional observer callback runs outside SearchR1 after a
+        reasoning/search chunk and its retrieved documents are available.
+
+        Callback return dict supports:
+          - "stop": True to halt further generation
+          - "abstain": True (paired with stop) marks abstain
+          - "reason": string label
+          - "prompt_injection": string appended to the prompt before the next
+            generation pass (this is what makes the observer act as a
+            reasoning *corrector*: it can feed verigraph-derived guidance back
+            into SearchR1 between thinking steps without giving away the
+            answer).
+
+        max_turns_override lets the caller use a larger reasoning budget for
+        verigraph-corrected runs without re-initialising the model.
+        """
+        question = question.strip()
+        if question and question[-1] != '?':
+            question += '?'
+
+        prompt = f"""Answer the given question. \
+You must conduct reasoning inside <think> and </think> first every time you get new information. \
+After reasoning, if you find you lack some knowledge, you can call a search engine by <search> query </search> and it will return the top searched results between <information> and </information>. \
+You can search as many times as your want. \
+If you find no further external knowledge needed, you can directly provide the answer inside <answer> and </answer>, without detailed illustrations. For example, <answer> Beijing </answer>. Question: {question}\n"""
+
+        if self.tokenizer.chat_template:
+            prompt = self.tokenizer.apply_chat_template(
+                [{"role": "user", "content": prompt}],
+                add_generation_prompt=True,
+                tokenize=False
+            )
+
+        if verbose:
+            print('\n\n################# [Start Reasoning + Searching with Observer] ##################\n\n')
+            print(prompt)
+
+        full_response = ""
+        cnt = 0
+        retrieval_turns = []
+        total_search_results = []
+        last_search_results_list = []
+        observer_events = []
+        observer_stop_reason = ""
+        observer_abstained = False
+        max_turns_local = int(max_turns_override) if max_turns_override is not None else self.max_turns
+
+        while cnt < max_turns_local:
+            input_ids = self.tokenizer.encode(prompt, return_tensors='pt').to(self.device)
+            attention_mask = torch.ones_like(input_ids)
+
+            outputs = self.model.generate(
+                input_ids,
+                attention_mask=attention_mask,
+                max_new_tokens=self.max_new_tokens,
+                max_length=None,
+                stopping_criteria=self.stopping_criteria,
+                pad_token_id=self.tokenizer.eos_token_id,
+                do_sample=True,
+                temperature=self.temperature
+            )
+
+            if outputs[0][-1].item() in self.curr_eos:
+                generated_tokens = outputs[0][input_ids.shape[1]:]
+                output_text = self.tokenizer.decode(generated_tokens, skip_special_tokens=True)
+                full_response += output_text
+                if verbose:
+                    print(output_text)
+                break
+
+            generated_tokens = outputs[0][input_ids.shape[1]:]
+            output_text = self.tokenizer.decode(generated_tokens, skip_special_tokens=True)
+
+            tmp_query = self._get_query(self.tokenizer.decode(outputs[0], skip_special_tokens=True))
+            if tmp_query:
+                last_search_results_list = self._search(tmp_query)
+                for res in last_search_results_list:
+                    if res not in total_search_results:
+                        total_search_results.append(res)
+
+                turn_info = {
+                    "turn": cnt,
+                    "query": tmp_query,
+                    "retrieved_docs": [],
+                }
+                for result in last_search_results_list:
+                    if result.startswith("(Title: "):
+                        title_end = result.find(")")
+                        if title_end != -1:
+                            turn_info["retrieved_docs"].append(result[8:title_end])
+                retrieval_turns.append(turn_info)
+
+                search_results = "\n".join([f"Doc {idx+1}{result}"
+                                          for idx, result in enumerate(last_search_results_list)])
+            else:
+                search_results = ''
+
+            search_text = self.curr_search_template.format(
+                output_text=output_text,
+                search_results=search_results
+            )
+            prompt += search_text
+            full_response += search_text
+
+            observer_action: Dict[str, Any] = {}
+            if on_turn is not None:
+                event = {
+                    "turn": cnt,
+                    "output_text": output_text,
+                    "search_text": search_text,
+                    "query": tmp_query or "",
+                    "search_results": list(last_search_results_list or []),
+                    "full_response": full_response,
+                }
+                observer_action = on_turn(event) or {}
+                event["observer_action"] = dict(observer_action)
+                observer_events.append(event)
+
+            injection = str(observer_action.get("prompt_injection", "") or "")
+            if injection:
+                prompt += injection
+                full_response += injection
+                if verbose:
+                    print(injection)
+
+            cnt += 1
+
+            if verbose:
+                print(search_text)
+
+            if observer_action.get("stop"):
+                observer_stop_reason = str(observer_action.get("reason", "observer_stop") or "observer_stop")
+                observer_abstained = bool(observer_action.get("abstain", False))
+                break
+
+        predicted_answer = self._extract_answer(full_response)
+        reasoning_path = self._extract_reasoning(full_response)
+
+        return {
+            "full_response": full_response,
+            "predicted_answer": predicted_answer,
+            "reasoning_path": reasoning_path,
+            "num_turns": cnt,
+            "retrieval_turns": retrieval_turns,
+            "total_search_results": total_search_results,
+            "last_search_results_list": last_search_results_list,
+            "observer_events": observer_events,
+            "observer_stop_reason": observer_stop_reason,
+            "observer_abstained": observer_abstained,
+        }
 
 
 # Example usage when run as script

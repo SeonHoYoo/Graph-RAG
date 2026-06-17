@@ -1,0 +1,108 @@
+
+========== Dataset: 2wikimultihopqa ==========
+DATA_FILE=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+OUTPUT_DIR=/data3/seonhoyoo/graphcheck-qa/infilling/output/2wikimultihopqa
+MODEL_NAME=Qwen/Qwen2.5-7B-Instruct
+
+>>> use_full_doc=0, triplet_selection=all
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top1
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top3
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top5
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top10
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=all
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top1
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top3
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top5
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top10
+    data=/data3/seonhoyoo/graphcheck-qa/results/2wikimultihopqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+========== Dataset: hotpotqa ==========
+DATA_FILE=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+OUTPUT_DIR=/data3/seonhoyoo/graphcheck-qa/infilling/output/hotpotqa
+MODEL_NAME=Qwen/Qwen2.5-7B-Instruct
+
+>>> use_full_doc=0, triplet_selection=all
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top1
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top3
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top5
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top10
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=all
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top1
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top3
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top5
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top10
+    data=/data3/seonhoyoo/graphcheck-qa/results/hotpotqa/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+========== Dataset: musique ==========
+DATA_FILE=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+OUTPUT_DIR=/data3/seonhoyoo/graphcheck-qa/infilling/output/musique
+MODEL_NAME=Qwen/Qwen2.5-7B-Instruct
+
+>>> use_full_doc=0, triplet_selection=all
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top1
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top3
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top5
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=0, triplet_selection=top10
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=all
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top1
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top3
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top5
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+>>> use_full_doc=1, triplet_selection=top10
+    data=/data3/seonhoyoo/graphcheck-qa/results/musique/triplets/Qwen2.5-7B-Instruct/triplets_train_sampled.json
+
+========== All experiments completed ==========
+Results: /data3/seonhoyoo/graphcheck-qa/infilling/output
