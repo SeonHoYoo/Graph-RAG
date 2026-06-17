@@ -499,3 +499,7 @@ if __name__ == "__main__":
     verifier = Direct(args)
     result_list = verifier.run_direct()
     verifier.save_result(result_list, verifier.direct_path)        
+<<<<<<< HEAD
+=======
+
+>>>>>>> 24ca818e0f331154b34af6cac6b77668042e557c
