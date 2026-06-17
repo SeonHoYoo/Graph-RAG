@@ -1,3 +1,4 @@
+import time
 import transformers
 import torch
 import random
@@ -168,8 +169,15 @@ class SearchR1Inference:
         retrieval_turns: list,
         total_search_results: list,
         last_search_results_list: list,
+        question_latency_sec: float = 0.0,
         initial_thinking: Optional[str] = None,
     ) -> Dict[str, Any]:
+        turn_generate_latencies = [
+            t["generate_latency_sec"] for t in retrieval_turns if "generate_latency_sec" in t
+        ]
+        total_tokens = sum(
+            t.get("num_generated_tokens", 0) for t in retrieval_turns
+        )
         return {
             "question": question,
             "prompt": prompt,
@@ -182,6 +190,11 @@ class SearchR1Inference:
             "retrieval_turns": retrieval_turns,
             "total_search_results": total_search_results,
             "last_search_results_list": last_search_results_list,
+            "latency": {
+                "question_latency_sec": round(question_latency_sec, 4),
+                "mean_turn_generate_latency_sec": round(sum(turn_generate_latencies) / len(turn_generate_latencies), 4) if turn_generate_latencies else 0.0,
+                "total_generated_tokens": total_tokens,
+            },
         }
 
     def infer(self, question: str, verbose: bool = False) -> Dict[str, Any]:
@@ -227,6 +240,7 @@ If you find no further external knowledge needed, you can directly provide the a
         retrieval_turns = []
         total_search_results = []
         last_search_results_list = []
+        question_start = time.perf_counter()
 
         # Iterative search loop
         while cnt < self.max_turns:
@@ -234,6 +248,7 @@ If you find no further external knowledge needed, you can directly provide the a
             attention_mask = torch.ones_like(input_ids)
 
             # Generate text with stopping criteria
+            t0 = time.perf_counter()
             outputs = self.model.generate(
                 input_ids,
                 attention_mask=attention_mask,
@@ -243,6 +258,8 @@ If you find no further external knowledge needed, you can directly provide the a
                 do_sample=True,
                 temperature=self.temperature
             )
+            generate_latency = time.perf_counter() - t0
+            num_generated_tokens = len(outputs[0]) - input_ids.shape[1]
 
             # Check if generation finished
             if outputs[0][-1].item() in self.curr_eos:
@@ -251,6 +268,15 @@ If you find no further external knowledge needed, you can directly provide the a
                 full_response += output_text
                 if verbose:
                     print(output_text)
+                retrieval_turns.append({
+                    "turn": cnt,
+                    "query": None,
+                    "model_output": output_text,
+                    "search_results": [],
+                    "retrieved_docs": [],
+                    "generate_latency_sec": round(generate_latency, 4),
+                    "num_generated_tokens": num_generated_tokens,
+                })
                 break
 
             generated_tokens = outputs[0][input_ids.shape[1]:]
@@ -259,7 +285,9 @@ If you find no further external knowledge needed, you can directly provide the a
             # Extract and perform search
             tmp_query = self._get_query(self.tokenizer.decode(outputs[0], skip_special_tokens=True))
             if tmp_query:
+                search_start = time.perf_counter()
                 last_search_results_list = self._search(tmp_query)
+                search_latency = time.perf_counter() - search_start
                 for res in last_search_results_list:
                     if res not in total_search_results:
                         total_search_results.append(res)
@@ -271,6 +299,9 @@ If you find no further external knowledge needed, you can directly provide the a
                     "model_output": output_text,
                     "search_results": last_search_results_list.copy(),
                     "retrieved_docs": [],
+                    "generate_latency_sec": round(generate_latency, 4),
+                    "search_latency_sec": round(search_latency, 4),
+                    "num_generated_tokens": num_generated_tokens,
                 }
 
                 # Extract document titles from search results
@@ -300,9 +331,12 @@ If you find no further external knowledge needed, you can directly provide the a
             if verbose:
                 print(search_text)
 
-        print("Question:", question)
-        print("Full Response:", full_response)
-        print("\n===\n")
+        question_latency = time.perf_counter() - question_start
+
+        if verbose:
+            print("Question:", question)
+            print("Full Response:", full_response)
+            print("\n===\n")
 
         return self._build_result(
             question=question,
@@ -312,6 +346,7 @@ If you find no further external knowledge needed, you can directly provide the a
             retrieval_turns=retrieval_turns,
             total_search_results=total_search_results,
             last_search_results_list=last_search_results_list,
+            question_latency_sec=question_latency,
         )
 
     def infer_with_nudge(self, question: str, thinking: str, verbose: bool = False) -> Dict[str, Any]:
@@ -359,6 +394,7 @@ If you find no further external knowledge needed, you can directly provide the a
         retrieval_turns = []
         total_search_results = []
         last_search_results_list = []
+        question_start = time.perf_counter()
 
         # Iterative search loop
         while cnt < self.max_turns:
@@ -366,6 +402,7 @@ If you find no further external knowledge needed, you can directly provide the a
             attention_mask = torch.ones_like(input_ids)
 
             # Generate text with stopping criteria
+            t0 = time.perf_counter()
             outputs = self.model.generate(
                 input_ids,
                 attention_mask=attention_mask,
@@ -375,6 +412,8 @@ If you find no further external knowledge needed, you can directly provide the a
                 do_sample=True,
                 temperature=self.temperature
             )
+            generate_latency = time.perf_counter() - t0
+            num_generated_tokens = len(outputs[0]) - input_ids.shape[1]
 
             # Check if generation finished
             if outputs[0][-1].item() in self.curr_eos:
@@ -383,6 +422,15 @@ If you find no further external knowledge needed, you can directly provide the a
                 full_response += output_text
                 if verbose:
                     print(output_text)
+                retrieval_turns.append({
+                    "turn": cnt,
+                    "query": None,
+                    "model_output": output_text,
+                    "search_results": [],
+                    "retrieved_docs": [],
+                    "generate_latency_sec": round(generate_latency, 4),
+                    "num_generated_tokens": num_generated_tokens,
+                })
                 break
 
             generated_tokens = outputs[0][input_ids.shape[1]:]
@@ -391,7 +439,9 @@ If you find no further external knowledge needed, you can directly provide the a
             # Extract and perform search
             tmp_query = self._get_query(self.tokenizer.decode(outputs[0], skip_special_tokens=True))
             if tmp_query:
+                search_start = time.perf_counter()
                 last_search_results_list = self._search(tmp_query)
+                search_latency = time.perf_counter() - search_start
                 for res in last_search_results_list:
                     if res not in total_search_results:
                         total_search_results.append(res)
@@ -403,6 +453,9 @@ If you find no further external knowledge needed, you can directly provide the a
                     "model_output": output_text,
                     "search_results": last_search_results_list.copy(),
                     "retrieved_docs": [],
+                    "generate_latency_sec": round(generate_latency, 4),
+                    "search_latency_sec": round(search_latency, 4),
+                    "num_generated_tokens": num_generated_tokens,
                 }
 
                 # Extract document titles from search results
@@ -432,6 +485,8 @@ If you find no further external knowledge needed, you can directly provide the a
             if verbose:
                 print(search_text)
 
+        question_latency = time.perf_counter() - question_start
+
         #print("Question:", question)
         print(prompt)
         # print("Full Response:", full_response)
@@ -445,6 +500,7 @@ If you find no further external knowledge needed, you can directly provide the a
             retrieval_turns=retrieval_turns,
             total_search_results=total_search_results,
             last_search_results_list=last_search_results_list,
+            question_latency_sec=question_latency,
             initial_thinking=thinking,
         )
 

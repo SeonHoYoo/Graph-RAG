@@ -1,7 +1,6 @@
 import anthropic
 import json
 import logging
-from openai import OpenAI
 import os
 import time
 import torch
@@ -9,8 +8,9 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from typing import *
 from tqdm import tqdm
 
-from model_library.prompt import construction_prompt, latent_detection_prompt_musique, latent_detection_prompt_hotpotqa, latent_detection_prompt_2wikimultihopqa, triplet_extraction_prompt_musique, triplet_extraction_prompt_hotpotqa, triplet_extraction_prompt_2wikimultihopqa, cot_reasoning_triplet_extraction_prompt, document_triplet_extraction_prompt, cot_reasoning_generation_prompt, cot_reasoning_with_triplets_prompt
+from model_library.prompt import construction_prompt, latent_detection_prompt_musique, latent_detection_prompt_hotpotqa, latent_detection_prompt_2wikimultihopqa, triplet_extraction_prompt_musique, triplet_extraction_prompt_hotpotqa, triplet_extraction_prompt_2wikimultihopqa, cot_reasoning_triplet_extraction_prompt, document_triplet_extraction_prompt, cot_reasoning_generation_prompt, cot_reasoning_with_triplets_prompt, think_search_triplet_extraction_prompt
 from model_library.llm_clients import GPT, Claude, Qwen
+from model_library.openai_client import create_openai_client
 
 logger = logging.getLogger(__name__)
 
@@ -24,8 +24,11 @@ class ConstructModel():
         batch_size: Optional[int] = 1,
     ):  
         
-        if construct_model_name.lower().startswith("gpt"):
-            client = OpenAI(api_key=api_key)
+        _model_name_lower = construct_model_name.lower()
+        _model_basename = _model_name_lower.split("/", 1)[-1] if "/" in _model_name_lower else _model_name_lower
+
+        if _model_name_lower.startswith("openai/") or _model_basename.startswith("gpt"):
+            client = create_openai_client(api_key=api_key)
             self.construct_model = GPT(construct_model_name, client)
         
         elif construct_model_name.lower().startswith("claude"):
@@ -316,6 +319,25 @@ class ConstructModel():
         return def_triples, triples
     
     
+    def extract_triplets_from_think_search(
+        self,
+        think_text: str,
+        search_query: str,
+    ) -> Tuple[List[str], List[str]]:
+        """
+        <think> 텍스트와 <search> 쿼리 쌍에서 triplet을 추출합니다.
+        """
+        prompt = (
+            think_search_triplet_extraction_prompt
+            .replace("<<target_think>>", think_text)
+            .replace("<<target_search>>", search_query)
+        )
+        answer = self.construct_model.generate(prompt)
+        def_triples = self.parse_latent_entities(answer)
+        triples = self.parse_triplets(answer, def_triples)
+        return def_triples, triples
+
+
     def extract_triplets_from_document(
         self,
         document: str
